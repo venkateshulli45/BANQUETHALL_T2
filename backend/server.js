@@ -31,6 +31,9 @@ import vendorAuthRoutes from './routes/vendorAuthRoutes.js';
 import forgotPasswordRoutes from'./routes/forgotPasswordRoutes.js';
 import forgotPasswordVendorRoutes from './routes/forgotPasswordVendorRoutes.js';
 import { format } from "date-fns";
+import sendEmail from "../backend/utils/emailService.js"
+import { sendEmailConfirmation } from './config/mailer.js';
+
 
 
 dotenv.config();
@@ -1619,6 +1622,52 @@ app.post('/create-payment-intent', async (req, res) => {
   }
 });
 
+
+
+app.post("/api/confirm-booking", async (req, res) => {
+  const { hall_id, userEmail, bookingDate } = req.body;
+  console.log("Received booking confirmation request:", req.body); 
+
+  try {
+    const [rows] = await db.promise().query(
+      "SELECT hall_name, vendor_email FROM function_halls WHERE id = ?",
+      [hall_id]
+    );
+    const { hall_name, vendor_email } = rows[0];
+    console.log("row: ",rows)
+    console.log("Sending email to vendor:", vendor_email);
+    await sendEmailConfirmation(
+      vendor_email,
+      "New Hall Booking Confirmation",
+      `<p>Your hall <strong>${hall_name}</strong> has been booked on <strong>${bookingDate}</strong>.</p>`
+    );
+
+    console.log("Sending email to user:", userEmail);
+    await sendEmailConfirmation(
+      userEmail,
+      "Your Booking Confirmation",
+      `<p>Thank you for booking <strong>${hall_name}</strong> on <strong>${bookingDate}</strong>! Your booking is confirmed.</p>`
+    );
+
+    console.log("Emails sent successfully.");
+    res.json({ success: true, message: "Emails sent successfully" });
+  } catch (error) {
+    console.error("Error in /confirm-booking:", error);
+    res.status(500).json({ success: false, message: "Email sending failed" });
+  }
+});
+
+app.post("/api/admin/approve-hall", async (req, res)=>{
+  const {hallId,hallName, vendorEmail}=req.body;
+  console.log("haiiii",hallName, vendorEmail)
+  console.log("Sending email to vendor:", vendorEmail);
+  await sendEmailConfirmation(
+    vendorEmail,
+    "Your hall is approved",
+    `<p>Your hall <strong>${hallName}</strong> has been approved by the admin of Event Heaven <strong></strong>.</p>`
+  );
+});
+
 db.connect((err) => {
     if (err) {
         console.error("MySQL connection failed:", err);
@@ -1638,6 +1687,10 @@ db.connect((err) => {
     createUserPaymentTable(); // And this one
 
 
+
+    sendEmail("testemail@example.com", "Test Email", "<p>This is a test email.</p>")
+      .then(() => console.log("Test email sent successfully!"))
+      .catch((err) => console.error("Error sending test email:", err));
 
     createUserHallBookings()
 
