@@ -1,0 +1,200 @@
+/* Main container styling */
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    text-align: center;
+  }
+  
+  .container h1 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+  }
+  
+  /* Booking details section */
+  .details {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin-top: 20px;
+    text-align: left;
+  }
+  
+  .sectionTitle {
+    margin-top: 25px;
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #333;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 8px;
+  }
+  
+  /* Each detail row */
+  .detailRow {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  @media (max-width: 576px) {
+    .detailRow {
+      flex-direction: column;
+    }
+    
+    .value {
+      text-align: left;
+      margin-top: 5px;
+    }
+    
+    .container {
+      padding: 15px;
+      margin: 20px auto;
+    }
+    
+    .details {
+      padding: 15px;
+    }
+  }
+  
+  /* Left side (label) */
+  .label {
+    font-weight: 600;
+    color: #555;
+    flex: 1;
+  }
+  
+  /* Right side (value) */
+  .value {
+    color: #333;
+    flex: 2;
+    text-align: right;
+  }
+  
+  /* Price breakdown section */
+  .priceBreakdown {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #eee;
+  }
+  
+  .priceRow {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .subsectionTitle {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .totalPrice {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid #ddd;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Payment Form Styling */
+  .paymentFormContainer {
+    margin: 20px 0;
+  }
+  
+  .inputGroup {
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  
+  .inputLabel {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+    font-size: 14px;
+  }
+  
+  .inputField {
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background-color: #fff;
+    width: 100%;
+  }
+  
+  .inputRowGroup {
+    display: flex;
+    gap: 15px;
+  }
+  
+  @media (max-width: 576px) {
+    .inputRowGroup {
+      flex-direction: column;
+      gap: 15px;
+    }
+  }
+  
+  /* Error message */
+  .errorMessage {
+    color: #e74c3c;
+    margin: 10px 0;
+    padding: 8px;
+    background-color: #fdeded;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  /* Pay Now Button */
+  .payButton {
+    display: inline-block;
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    background-color: #28a745;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.3s;
+  }
+  
+  .payButton:hover {
+    background-color: #218838;
+  }
+  
+  .payButton:disabled {
+    background-color: #94d3a2;
+    cursor: not-allowed;
+  }
+  
+  /* Loading state */
+  .loading {
+    text-align: center;
+    padding: 40px;
+    font-size: 16px;
+    color: #666;
+  }
+  
+  /* Secure payment note */
+  .securePaymentNote {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+  }

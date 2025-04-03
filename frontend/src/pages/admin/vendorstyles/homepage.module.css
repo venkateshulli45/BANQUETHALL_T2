@@ -1,0 +1,342 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #fff1f5 0%, #ffe4e9 100%);
+  overflow: hidden; /* Prevent page scrollbars */
+}
+
+.header {
+  background: linear-gradient(135deg, #ff4081 0%, #e91e63 100%);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 10;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.menuIcon {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuIcon:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.username {
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.iconBtn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.logoutBtn {
+  padding: 0.6rem 1.2rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid white;
+  color: white;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logoutBtn:hover {
+  background: white;
+  color: #e91e63;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  position: relative;
+  overflow: hidden; /* Prevent main content scrolling */
+}
+
+.sidebar {
+  width: 70px;
+  background: linear-gradient(180deg, #e91e63 0%, #ff4081 100%);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  z-index: 5;
+  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+
+.sidebar.open {
+  width: 250px;
+}
+
+.sidebarBtn {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1rem 1.5rem;
+  width: 100%;
+  border: none;
+  background: none;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.sidebarBtn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  padding-left: 2rem;
+}
+
+.iconContainer {
+  min-width: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebarBtn span {
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.sidebar.open .sidebarBtn span {
+  opacity: 1;
+}
+
+.content {
+  flex: 1;
+  padding: 2rem;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+  overflow: hidden; /* Prevent content scrolling */
+  display: flex;
+  flex-direction: column;
+}
+
+.content.blurred {
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 1rem;
+  }
+
+  .username {
+    display: none;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    width: 250px;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .logoutBtn {
+    padding: 0.5rem 1rem;
+  }
+}
+
+
+
+/* Add these to your existing styles */
+.darkTheme {
+  --bg-color: #1a1a2e;
+  --text-color: #f8f9fa;
+  --header-bg: #16213e;
+  --sidebar-bg: #0f3460;
+  --content-bg: #1a1a2e;
+  --card-bg: #16213e;
+  --text-secondary: #b0b0b0;
+  --accent-color: #ff6b9d;
+  --accent-hover: #e55d8b;
+  --input-border: #3a3a4a;
+  --focus-shadow: rgba(255, 107, 157, 0.1);
+  --cancel-bg: #3a3a4a;
+  --cancel-text: #f0f0f0;
+  --cancel-border: #4a4a5a;
+  --cancel-hover: #4a4a5a;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --border-color: #3a3a4a;
+  
+}
+
+.lightTheme {
+  --bg-color: #fff1f5;
+  --text-color: #333;
+  --text-secondary: #666666;
+  --accent-color: #e91e63;
+  --accent-hover: #d81b60;
+  --input-border: #eeeeee;
+  --input-bg: #ffffff;
+  --disabled-bg: #f5f5f5;
+  --header-bg: linear-gradient(135deg, #ff4081 0%, #e91e63 100%);
+  --sidebar-bg: linear-gradient(180deg, #e91e63 0%, #ff4081 100%);
+  --content-bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --focus-shadow: rgba(233, 30, 99, 0.1);
+  --cancel-bg: #f5f5f5;
+  --cancel-text: #666666;
+  --cancel-border: #dddddd;
+  --cancel-hover: #eeeeee;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --border-color: #e0e0e0;
+  
+}
+
+/* Update your existing styles to use these variables */
+.container {
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+
+.header {
+  background: var(--header-bg);
+}
+
+.sidebar {
+  background: var(--sidebar-bg);
+}
+
+.content {
+  background: var(--content-bg);
+}
+
+
+/* Modern tooltips */
+.iconBtn, .menuIcon, .logoutBtn {
+  position: relative;
+}
+
+.tooltip, .tooltipLogout {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  z-index: 100;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Position for header icon tooltips */
+.iconBtn .tooltip {
+  bottom: -35px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+}
+
+/* Position for menu icon tooltip */
+.menuIcon .tooltip {
+  left: 50%;
+  bottom: -35px;
+  transform: translateX(-50%) translateY(10px);
+}
+
+/* Position for logout button tooltip */
+.tooltipLogout {
+  bottom: -35px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+}
+
+/* Tooltip arrow */
+.tooltip::before, .tooltipLogout::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0 5px 5px 5px;
+  border-style: solid;
+  border-color: transparent transparent rgba(0, 0, 0, 0.75) transparent;
+}
+
+/* Show tooltip on hover */
+.iconBtn:hover .tooltip,
+.menuIcon:hover .tooltip,
+.logoutBtn:hover .tooltipLogout {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Adapt for dark mode */
+.darkTheme .tooltip,
+.darkTheme .tooltipLogout {
+  background: rgba(255, 255, 255, 0.9);
+  color: #1a1a2e;
+}
+
+.darkTheme .tooltip::before,
+.darkTheme .tooltipLogout::before {
+  border-color: transparent transparent rgba(255, 255, 255, 0.9) transparent;
+}

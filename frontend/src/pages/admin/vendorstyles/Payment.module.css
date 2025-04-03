@@ -1,0 +1,133 @@
+.paymentContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fff1f5 0%, #ffe4e9 100%);
+  padding: 2rem;
+}
+
+.paymentCard {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.paymentHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cardIcon {
+  font-size: 3rem;
+  color: #e91e63;
+}
+
+.paymentHeader h2 {
+  color: #333;
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.paymentDetails {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.detailRow:last-child {
+  border-bottom: none;
+}
+
+.detailRow span:first-child {
+  color: #666;
+  font-weight: 500;
+}
+
+.amount {
+  color: #e91e63;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.payBtn {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #ff4081 0%, #e91e63 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.payBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(233, 30, 99, 0.2);
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 1rem;
+  color: #e91e63;
+}
+
+@media (max-width: 768px) {
+  .paymentContainer {
+    padding: 1rem;
+  }
+
+  .paymentCard {
+    padding: 1.5rem;
+  }
+
+  .amount {
+    font-size: 1.25rem;
+  }
+}
+
+
+.cardElement {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  margin: 10px auto;
+}

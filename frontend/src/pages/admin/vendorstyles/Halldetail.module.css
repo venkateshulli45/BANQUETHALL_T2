@@ -1,0 +1,438 @@
+/* Base Variables */
+:root {
+  /* Light Theme Defaults */
+  --bg-color: #fff1f5;
+  --text-color: #333;
+  --text-secondary: #666;
+  --accent-color: #e91e63;
+  --accent-hover: #d81b60;
+  --input-bg: #ffffff;
+  --input-border: #ffd7e3;
+  --card-bg: #ffffff;
+  --shadow-color: rgba(233, 30, 99, 0.1);
+  --focus-shadow: rgba(233, 30, 99, 0.1);
+  --error-color: #ff0000;
+  --cancel-bg: #f5f5f5;
+  --cancel-text: #666;
+  --cancel-border: #ddd;
+  --cancel-hover: #eee;
+  --dropzone-bg: #fff5f8;
+  --dropzone-hover: #fff0f4;
+  --dropzone-active: #ffe0e9;
+  --image-preview-border: #ffd7e3;
+  --overlay-bg: rgba(0, 0, 0, 0.8);
+  --service-item-bg: #ffffff;
+  --service-shadow: rgba(0, 0, 0, 0.05);
+}
+
+/* Dark Theme Overrides */
+.darkTheme {
+  --bg-color: #1a1a2e;
+  --text-color: #f8f9fa;
+  --text-secondary: #b0b0b0;
+  --accent-color: #ff6b9d;
+  --accent-hover: #e55d8b;
+  --input-bg: #16213e;
+  --input-border: #3a3a4a;
+  --card-bg: #16213e;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --focus-shadow: rgba(255, 107, 157, 0.1);
+  --error-color: #ff6b6b;
+  --cancel-bg: #3a3a4a;
+  --cancel-text: #f0f0f0;
+  --cancel-border: #4a4a5a;
+  --cancel-hover: #4a4a5a;
+  --dropzone-bg: #1a1a2e;
+  --dropzone-hover: #1a1a2e;
+  --dropzone-active: #16213e;
+  --image-preview-border: #3a3a4a;
+  --overlay-bg: rgba(0, 0, 0, 0.9);
+  --service-item-bg: #16213e;
+  --service-shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Base Styles */
+.registerHallContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+
+.registerHallHeader {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.registerHallHeader h1 {
+  color: var(--accent-color);
+  font-size: 2.5em;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+}
+
+.registerHallMain {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.registerHallForm {
+  background: var(--card-bg);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px var(--shadow-color);
+}
+
+.formGroup {
+  margin-bottom: 24px;
+}
+
+.formGroup label {
+  display: block;
+  color: var(--accent-color);
+  font-size: 0.95em;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid var(--input-border);
+  border-radius: 8px;
+  font-size: 1em;
+  transition: all 0.3s ease;
+  background: var(--input-bg);
+  color: var(--text-color);
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px var(--focus-shadow);
+  outline: none;
+}
+
+.formGroup textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.error {
+  color: var(--error-color);
+  font-size: 0.8em;
+  margin-top: 5px;
+  display: block;
+}
+
+/* Drop Zone Styles */
+.dropZone {
+  border: 2px dashed var(--input-border);
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  background: var(--dropzone-bg);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+}
+
+.dropZone:hover {
+  border-color: var(--accent-color);
+  background: var(--dropzone-hover);
+}
+
+.dragActive {
+  border-color: var(--accent-color);
+  background: var(--dropzone-active);
+  box-shadow: 0 0 10px var(--shadow-color);
+}
+
+/* Image Preview Styles */
+.imagePreviewContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.imagePreview {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid var(--image-preview-border);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.imagePreview:hover {
+  transform: scale(1.05);
+}
+
+.imagePreview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.removeImageBtn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--accent-color);
+  padding: 0;
+  line-height: 1;
+  z-index: 10;
+}
+
+.removeImageBtn:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* Image Viewer Styles */
+.imageViewerOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--overlay-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.imageViewerContainer {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.fullSizeImage {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.closeImageViewerBtn {
+  position: absolute;
+  top: -30px;
+  right: 0;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  color: var(--accent-color);
+  padding: 0;
+  line-height: 1;
+}
+
+/* Services Section Styles */
+.servicesContainer {
+  background: var(--dropzone-bg);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.serviceItem {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--service-item-bg);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px var(--service-shadow);
+}
+
+.serviceCheckbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.serviceCheckbox input {
+  accent-color: var(--accent-color);
+}
+
+.servicePriceInput {
+  margin-top: 10px;
+}
+
+.servicePriceInput input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  background: var(--input-bg);
+  color: var(--text-color);
+}
+
+.cateringOptions {
+  margin-top: 15px;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.radioLabel input {
+  accent-color: var(--accent-color);
+}
+
+/* Form Actions Styles */
+.formActions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.submitBtn,
+.cancelBtn {
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.submitBtn {
+  background: var(--accent-color);
+  color: white;
+}
+
+.submitBtn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+}
+
+.cancelBtn {
+  background: var(--cancel-bg);
+  color: var(--cancel-text);
+  border: 1px solid var(--cancel-border);
+}
+
+.cancelBtn:hover {
+  background: var(--cancel-hover);
+  color: var(--text-color);
+}
+
+/* Dark Theme Specific Adjustments */
+.darkTheme .removeImageBtn {
+  background: rgba(0, 0, 0, 0.7);
+  color: var(--accent-color);
+}
+
+.darkTheme .removeImageBtn:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.darkTheme .closeImageViewerBtn {
+  background: var(--input-bg);
+  color: var(--accent-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .registerHallContainer {
+    padding: 20px;
+  }
+
+  .registerHallForm {
+    padding: 24px;
+  }
+
+  .servicesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .formActions {
+    flex-direction: column;
+  }
+
+  .submitBtn,
+  .cancelBtn {
+    width: 100%;
+  }
+
+  .radioGroup {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+/* Truncated Cell Styles (if needed) */
+.truncatedCell {
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.truncatedCell:hover {
+  overflow: visible;
+  white-space: normal;
+  z-index: 100;
+}
+
+.truncatedCell:hover span {
+  position: absolute;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  min-width: max-content;
+  top: -5px;
+  left: 0;
+}

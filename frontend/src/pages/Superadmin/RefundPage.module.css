@@ -1,0 +1,140 @@
+.refundContainer {
+    max-width: 600px;
+    width: 100%;
+    margin: auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+
+    /* Centering the container */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.refundContainer h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.refundContainer p {
+    font-size: 16px;
+    color: #555;
+    margin: 8px 0;
+}
+
+.refundDetails {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: left;
+    margin-top: 20px;
+}
+
+.refundDetails p {
+    font-size: 16px;
+    font-weight: 500;
+    color: #444;
+}
+
+.refundDetails strong {
+    color: #222;
+}
+
+/* Center the button */
+.refundButton {
+    background-color: #ff4c4c;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    border-radius: 5px;
+    transition: 0.3s ease;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.refundButton:hover {
+    background-color: #cc0000;
+}
+/* Full-page centering */
+.refundPageWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    background-color: #f4f4f4; /* Light background */
+}
+
+.refundContainer {
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content inside */
+    justify-content: center;
+}
+
+.refundContainer h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.refundContainer p {
+    font-size: 16px;
+    color: #555;
+    margin: 10px 0;
+    text-align: center;
+}
+
+/* Centering the refund details */
+.refundDetails {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center; /* Centering content */
+    margin-top: 15px;
+    width: 80%;
+}
+
+.refundDetails p {
+    font-size: 16px;
+    font-weight: 500;
+    color: #444;
+}
+
+.refundDetails strong {
+    color: #222;
+}
+
+/* Center the button */
+.refundButton {
+    background-color: #ff4c4c;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    border-radius: 5px;
+    transition: 0.3s ease;
+}
+
+.refundButton:hover {
+    background-color: #cc0000;
+}

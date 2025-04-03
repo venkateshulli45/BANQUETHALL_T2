@@ -1,0 +1,142 @@
+.bankAccountContainer {
+  background: var(--card-bg);
+  color: var(--text-color);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px var(--shadow-color);
+  max-width: 800px;
+  margin: 0 auto;
+  animation: fadeIn 0.3s ease-in-out;
+  border: 1px solid var(--border-color);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bankHeader {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.bankHeader h2 {
+  color: var(--accent-color);
+  font-size: 2rem;
+  font-weight: 600;
+  position: relative;
+  display: inline-block;
+}
+
+.bankHeader h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(to right, var(--accent-color), var(--accent-hover));
+  border-radius: 2px;
+}
+
+.bankForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.bankField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bankField label {
+  color: var(--text-color);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.bankField input {
+  padding: 0.75rem;
+  border: 2px solid var(--input-border);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: var(--input-bg);
+  color: var(--text-color);
+}
+
+.bankField input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px var(--focus-shadow);
+  outline: none;
+}
+
+.bankField input:hover {
+  border-color: var(--accent-hover);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: flex-end;
+}
+
+.saveBtn,
+.cancelBtn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 120px;
+}
+
+.saveBtn {
+  background: var(--accent-color);
+  color: white;
+  border: none;
+}
+
+.cancelBtn {
+  background: var(--cancel-bg);
+  color: var(--cancel-text);
+  border: 1px solid var(--cancel-border);
+}
+
+.saveBtn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.cancelBtn:hover {
+  background: var(--cancel-hover);
+  border-color: var(--cancel-border-hover);
+}
+
+@media (max-width: 768px) {
+  .bankAccountContainer {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+  }
+
+  .saveBtn,
+  .cancelBtn {
+    width: 100%;
+  }
+}

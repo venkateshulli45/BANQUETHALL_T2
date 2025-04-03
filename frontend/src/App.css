@@ -1,0 +1,29 @@
+/* Add your global styles here */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.root {
+    --bg-color: #fff1f5;
+    --text-color: #333;
+    --text-secondary: #666666;
+    --accent-color: #e91e63;
+    --accent-hover: #d81b60;
+    --input-border: #eeeeee;
+    --input-bg: #ffffff;
+    --disabled-bg: #f5f5f5;
+    --header-bg: linear-gradient(135deg, #ff4081 0%, #e91e63 100%);
+    --sidebar-bg: linear-gradient(180deg, #e91e63 0%, #ff4081 100%);
+    --content-bg: #f8f9fa;
+    --card-bg: #ffffff;
+    --focus-shadow: rgba(233, 30, 99, 0.1);
+    --cancel-bg: #f5f5f5;
+    --cancel-text: #666666;
+    --cancel-border: #dddddd;
+    --cancel-hover: #eeeeee;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --border-color: #e0e0e0;
+    
+  }

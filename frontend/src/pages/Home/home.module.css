@@ -1,0 +1,99 @@
+/* Home.module.css */
+
+.home {
+    padding: 20px;
+    /* font-family: Arial, sans-serif; */
+    background-color: rgb(233, 234, 236);
+}
+
+/* Grid layout ensuring 3 templates per row */
+.con1 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns per row */
+    gap: 20px;
+    margin: 30px 50px;
+}
+
+/* Hall card design */
+.hall1 {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.hall1:hover{
+    transform: scale(1.05);
+    background-color: aliceblue;
+} 
+
+/* Ensuring image fits properly without cropping */
+
+.hall1 img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover; /* Change from contain to cover */
+    border-radius: 8px;/* Light background for the image area */
+}
+
+/* Data section */
+.halldata {
+    padding: 10px;
+}
+
+/* Specifications (Price, Rating, etc.) */
+.spec {
+    display: flex;
+    justify-content: space-around; /* Changed from space-between to space-around */
+    align-items: center;
+    font-size: 14px;
+    margin-top: 10px;
+    width: 100%; /* Ensure it takes full width */
+    padding: 0 10px; /* Add some horizontal padding */
+}
+
+/* Optional: Add some spacing between the items */
+.spec div {
+    margin: 0 5px; /* Adds spacing between each item */
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.pagination button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+    .con1 {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .con1 {
+        grid-template-columns: repeat(1, 1fr); /* 1 column on mobile */
+    }
+}

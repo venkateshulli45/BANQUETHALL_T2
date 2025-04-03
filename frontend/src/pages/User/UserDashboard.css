@@ -1,0 +1,408 @@
+/* Wrapper for the entire dashboard */
+.dashboard-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Navbar styling */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #e91e63;
+  color: #fff;
+  padding: 10px 20px;
+  height: 60px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Back arrow styling */
+.back-arrow {
+  font-size: 20px;
+  cursor: pointer;
+  color: #fff;
+  margin-right: 15px;
+}
+
+/* Sidebar toggle icon styling */
+.menu-icon {
+  font-size: 24px;
+  cursor: pointer;
+  color: #fff;
+  margin-right: 15px;
+}
+
+/* Navbar left section styling */
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Navbar title styling */
+.navbar h2 {
+  font-size: 24px;
+  color: #fff;
+  margin: 0;
+}
+
+/* User name styling */
+.user-name {
+  font-size: 20px;
+  color: #fff;
+  max-width: 150px;
+  margin-right: 50px;
+}
+/* Edit form styling */
+/* Profile actions container */
+.profile-actions {
+  display: flex;
+  justify-content: space-between; /* Align buttons to opposite ends */
+  width: 100%; /* Take full width of the container */
+  max-width: 400px; /* Match the width of the profile card */
+  margin-top: 20px; /* Add spacing above the buttons */
+}
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-field {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.edit-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edit-btn:hover {
+  background-color: #0056b3;
+}
+
+.save-btn {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.save-btn:hover {
+  background-color: #218838;
+}
+
+.cancel-btn {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background-color: #c82333;
+}
+/* Message styling */
+.message {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #28a745; /* Green for success */
+}
+
+.message.error {
+  color: #dc3545; /* Red for error */
+}
+
+/* Sidebar styling */
+.sidebar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width:100px;
+  height: calc(100vh - 60px);
+  background-color: #e91e63;
+  color: #fff;
+  overflow-y: auto;
+  transition: width 0.3s ease;
+  z-index: 999;
+}
+.sidebar.open{
+  width: 200px;
+}
+
+.sidebar.closed {
+  width: 70px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-top: 20px;
+}
+
+.sidebar ul li {
+  padding: 15px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar ul li:hover {
+  background-color: #c2185b;
+}
+
+.sidebar ul li span {
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+/* Main content styling */
+.main-content {
+  margin-left: 250px;
+  padding: 80px 20px 20px;
+  flex-grow: 1;
+  transition: margin-left 0.3s ease;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.sidebar.closed + .main-content {
+  margin-left: 60px;
+}
+.profile-icon {
+  font-size: 70px; /* Adjust the size of the icon */
+  color: #e91e63; /* Match the theme color */
+  margin-bottom: 15px; /* Add spacing below the icon */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dashboard-container {
+  padding: 20px;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+/* Profile section */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-card {
+  padding: 20px;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+
+
+.profile-details p {
+  margin: 5px 0;
+}
+
+/* Logout button */
+.logout-container {
+  margin-top: 20px;
+}
+
+.logout-btn {
+  background-color: #d9534f;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #c9302c;
+}
+
+/* Table styling */
+.table-container {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.data-table th,
+.data-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.data-table th {
+  background-color: #f4f4f4;
+}
+
+.status-confirmed {
+  color: green;
+}
+
+.status-pending {
+  color: orange;
+}
+
+.status-cancelled {
+  color: red;
+}
+.status-completed{
+  color:green;
+}
+
+/* Support section */
+.support-email {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.support-email:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+
+/* For phones (max-width: 480px) */
+@media (max-width: 480px) {
+  /* Navbar adjustments */
+  .navbar {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+  }
+
+  .navbar h2 {
+    order: 1;
+    margin-left: 0;
+    font-size: 18px;
+  }
+
+  .user-name {
+    order: 2;
+    margin-right: 10px;
+    font-size: 14px;
+  }
+
+  /* Sidebar adjustments */
+  .sidebar {
+    width: fit-content;
+  }
+
+  .sidebar ul li span {
+    display: none;
+  }
+
+  .menu-icon {
+    display: none;
+  }
+
+  .main-content {
+    margin-left: 70px;
+  }
+}
+
+
+/* Wrapper for the entire dashboard */
+.dashboard-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #fff1f5;
+  color: #333;
+}
+
+/* Navbar styling */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #ff4081 0%, #e91e63 100%);
+  color: #fff;
+  padding: 10px 20px;
+  height: 60px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Main content area with hidden scrollbar */
+.main-content {
+  margin-left: 250px;
+  padding: 80px 20px 20px;
+  flex-grow: 1;
+  transition: margin-left 0.3s ease;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 60px);
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.main-content::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebar.closed + .main-content {
+  margin-left: 60px;
+}
+
+/* All other existing CSS rules remain exactly the same */
+/* ... */
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 70px;
+    padding: 80px 10px 20px;
+  }
+  
+  /* Other responsive styles remain the same */
+}
