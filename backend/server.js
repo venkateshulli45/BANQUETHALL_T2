@@ -31,7 +31,6 @@ import vendorAuthRoutes from './routes/vendorAuthRoutes.js';
 import forgotPasswordRoutes from'./routes/forgotPasswordRoutes.js';
 import forgotPasswordVendorRoutes from './routes/forgotPasswordVendorRoutes.js';
 import { format } from "date-fns";
-import sendEmail from "../backend/utils/emailService.js"
 import { sendEmailConfirmation } from './config/mailer.js';
 
 
@@ -1685,12 +1684,6 @@ db.connect((err) => {
     createHallAvailabilityTable(); // Add this line
     createBookingTable3(); // Also ensure this is called
     createUserPaymentTable(); // And this one
-
-
-
-    sendEmail("testemail@example.com", "Test Email", "<p>This is a test email.</p>")
-      .then(() => console.log("Test email sent successfully!"))
-      .catch((err) => console.error("Error sending test email:", err));
 
     createUserHallBookings()
 
