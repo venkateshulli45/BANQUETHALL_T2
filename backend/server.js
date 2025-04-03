@@ -13,7 +13,8 @@ import {
   createHallAvailabilityTable,
   createBookingTable3,
   createUserPaymentTable,
-  createUserHallBookings
+  createUserHallBookings,
+  createUserNotificationsTable
 } from './models/signup.model.js';
 import cors from "cors";
 import multer from 'multer';
@@ -1619,6 +1620,24 @@ app.post('/create-payment-intent', async (req, res) => {
   }
 });
 
+
+
+// Add this to your server.js
+app.get("/api/user/notifications/:userEmail", async (req, res) => {
+  try {
+    const { userEmail } = req.params;
+    const [notifications] = await db.promise().query(
+      "SELECT * FROM user_notifications WHERE user_email = ? ORDER BY created_at DESC",
+      [userEmail]
+    );
+    res.json({ notifications });
+  } catch (error) {
+    console.error("Error fetching user notifications:", error);
+    res.status(500).json({ error: "Failed to fetch notifications" });
+  }
+});
+
+
 db.connect((err) => {
     if (err) {
         console.error("MySQL connection failed:", err);
@@ -1636,7 +1655,7 @@ db.connect((err) => {
     createHallAvailabilityTable(); // Add this line
     createBookingTable3(); // Also ensure this is called
     createUserPaymentTable(); // And this one
-
+    createUserNotificationsTable();
 
 
     createUserHallBookings()

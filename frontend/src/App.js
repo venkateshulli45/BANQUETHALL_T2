@@ -18,7 +18,7 @@ import RedirectRoute from './Components/protected/RedirectRoute.js';
 
 import HomeDetails from './pages/Home/homedetails';
 import UserPayment from './pages/User/UserPayment';
-import UserProfile from './pages/User/UserProfile';
+// import UserProfile from './pages/User/UserProfile';
 import HallBooking from './pages/User/HallBooking';
 
 import UserDashboard from './pages/User/UserDashboard';
@@ -41,7 +41,7 @@ function App() {
 
         <Route element={<ProtectedRoute role="user" />}>
           <Route path="/userdashboard" element={<UserDashboard />} />
-          <Route path='/UserProfile' element={<UserProfile/>}/>
+          {/* <Route path='/UserProfile' element={<UserProfile/>}/> */}
           <Route path="/HallBooking" element={<HallBooking />} />
           <Route path='/UserPayment' element={<UserPayment/>}/>
         </Route>

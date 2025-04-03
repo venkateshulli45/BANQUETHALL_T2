@@ -262,6 +262,24 @@ export const createHallAvailabilityTable = async () => {
   }
 };
 
+// In signup.model.js
+export const createUserNotificationsTable = async () => {
+  try {
+    await db.promise().query(`
+      CREATE TABLE IF user_notifications (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_email VARCHAR(255) NOT NULL,
+        message TEXT NOT NULL,
+        status ENUM('unread', 'read') DEFAULT 'unread',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_email) REFERENCES users(email) ON DELETE CASCADE
+      )
+    `);
+    console.log("User notifications table created successfully.");
+  } catch (err) {
+    console.error("Error creating user_notifications table:", err);
+  }
+};
 
 
 
