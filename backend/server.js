@@ -375,6 +375,7 @@ app.post("/api/user-login", async (req, res) => {
       // Compare hashed password
       const isPasswordValid = bcrypt.compareSync(password, user.password);
       if (!isPasswordValid) {
+        console.log('password not valid');
           return res.status(401).json({ success: false, message: "Invalid email or password" });
       }
 
@@ -408,18 +409,44 @@ app.post("/api/user-login", async (req, res) => {
 app.post("/api/logout", (req, res) => {
   res.clearCookie("authToken");
   res.clearCookie("vendorToken");
+  res.clearCookie("adminToken");
   res.json({ message: "Logged out successfully" });
 });
 
 // Admin login endpoint
-app.post("/api/admin/login", (req, res) => {
+app.post("/api/adminlogin", (req, res) => {
     const { email, password } = req.body;
   
+    try{
+
     if (email === "admin@example.com" && password === "admin123") {
-      return res.status(200).json({ message: "Login successful" });
+      const token = jwt.sign(
+        { email:email, role: "admin" },
+
+        process.env.JWT_SECRET,
+        { expiresIn: "10h" }
+    );
+    console.log("Generated JWT token:", token);
+
+    // Set HTTP-only cookie
+    const cookieOption = serialize("adminToken", token, {
+        httpOnly: false,
+        secure: false, // Set to false for development
+        sameSite: "strict",
+        path: "/",
+        maxAge: 36000,
+    });
+
+    res.setHeader("Set-Cookie", [cookieOption]);
+    console.log("Set-Cookie header:", cookieOption); // Log the Set-Cookie header for debugging
+    return res.json({ success: true, message: "Login successful", token });
     } else {
       return res.status(401).json({ error: "Invalid email or password" });
     }
+    } catch (err) {
+      console.error("Database query error:", err);
+      return res.status(500).json({ success: false, message: "Server Error" });
+      }
   });
   
 
@@ -1624,7 +1651,7 @@ app.post('/create-payment-intent', async (req, res) => {
 
 
 
-<<<<<<< HEAD
+
 // Add this to your server.js
 app.get("/api/user/notifications/:userEmail", async (req, res) => {
   try {
@@ -1640,7 +1667,7 @@ app.get("/api/user/notifications/:userEmail", async (req, res) => {
   }
 });
 
-=======
+
 app.post("/api/confirm-booking", async (req, res) => {
   const { hall_id, userEmail, bookingDate } = req.body;
   console.log("Received booking confirmation request:", req.body); 
@@ -1684,7 +1711,7 @@ app.post("/api/admin/approve-hall", async (req, res)=>{
     `<p>Your hall <strong>${hallName}</strong> has been approved by the admin of Event Heaven <strong></strong>.</p>`
   );
 });
->>>>>>> keerthana
+
 
 db.connect((err) => {
     if (err) {
@@ -1703,16 +1730,8 @@ db.connect((err) => {
     createHallAvailabilityTable(); // Add this line
     createBookingTable3(); // Also ensure this is called
     createUserPaymentTable(); // And this one
-<<<<<<< HEAD
+
     createUserNotificationsTable();
-
-
-    sendEmail("testemail@example.com", "Test Email", "<p>This is a test email.</p>")
-      .then(() => console.log("Test email sent successfully!"))
-      .catch((err) => console.error("Error sending test email:", err));
-=======
->>>>>>> keerthana
-
     createUserHallBookings()
 
     const port = 8500;
