@@ -29,6 +29,13 @@ const UserPaymentComponent = () => {
     }
   }, [bookingDetails, navigate]);
 
+  const handleBackClick = () => {
+    // Navigate back to HomeDetails with the hall data
+    navigate(`/`, {
+      state: { hallData: bookingDetails.hall }
+    });
+  };
+
   if (!bookingDetails.hall) {
     return <p>Redirecting...</p>;
   }
@@ -157,6 +164,11 @@ const UserPaymentComponent = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.backIconContainer}>
+        <button onClick={handleBackClick} className={styles.backButton}>
+          &larr; Back to Home
+        </button>
+      </div>
       <h1>Confirm Your Booking</h1>
       <div className={styles.details}>
         <h2>Booking Details</h2>
