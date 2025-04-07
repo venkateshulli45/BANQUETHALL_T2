@@ -2,6 +2,7 @@
 import express from 'express';
 import { db } from './config/db.js';
 import Stripe from "stripe";
+
 import { 
   createSignupTable,
   createSignupTableForBusiness,
@@ -14,7 +15,8 @@ import {
   createBookingTable3,
   createUserPaymentTable,
   createUserHallBookings,
-  createUserNotificationsTable
+  createUserNotificationsTable,
+ 
 } from './models/signup.model.js';
 import cors from "cors";
 import multer from 'multer';
@@ -32,8 +34,6 @@ import vendorAuthRoutes from './routes/vendorAuthRoutes.js';
 import forgotPasswordRoutes from'./routes/forgotPasswordRoutes.js';
 import forgotPasswordVendorRoutes from './routes/forgotPasswordVendorRoutes.js';
 import { format } from "date-fns";
-import { sendEmailConfirmation } from './config/mailer.js';
-
 
 
 dotenv.config();
@@ -99,127 +99,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/vendorAuth", vendorAuthRoutes);
 app.use("/api/forgotPassword", forgotPasswordRoutes);
 app.use("/api/forgotPasswordVendor", forgotPasswordVendorRoutes);
-
-
-// User Signup API
-// app.post("/api/users", (req, res) => {
-//   console.log("Received POST request at /api/users");
-//   console.log("Request body:", req.body);
-
-//   const { username, email, phone, password } = req.body;
-//   if (!username || !email || !phone || !password) {
-//       console.log("Missing fields in request body");
-//       return res.status(400).json({ success: false, message: "Please provide all fields" });
-//   }
-
-//   const sql = "INSERT INTO users (username, email, phone, password) VALUES (?, ?, ?, ?)";
-  
-//   db.query(sql, [username, email, phone, password], (err, result) => {
-//       if (err) {
-//           console.error("Error inserting user into database:", err);
-//           return res.status(500).json({ success: false, message: "Database error", error: err.message });
-//       }
-
-//       console.log("User inserted successfully with ID:", result.insertId);
-//       res.status(201).json({
-//           success: true,
-//           data: { id: result.insertId, username, email, phone }
-//       });
-//   });
-// });
-
-
-
-
-
-// //vendor sign up
-// app.post("/api/business", (req, res) => {
-//     console.log("Received POST request at /api/business");
-//     console.log("Request body:", req.body);
-
-//     const { vendorName, brandName, city, email, phone, password } = req.body;
-
-//     if (!vendorName || !brandName || !city || !email || !phone || !password) {
-//         console.log("Missing fields in request body");
-//         return res.status(400).json({ success: false, message: "Please provide all fields" });
-//     }
-
-//     const sql = "INSERT INTO business (vendor_name, brand_name, city, email, phone, password) VALUES (?, ?, ?, ?, ?, ?)";
-    
-//     db.query(sql, [vendorName, brandName, city, email, phone, password], (err, result) => {
-//         if (err) {
-//             console.error("Error inserting business:", err);
-//             return res.status(500).json({ success: false, message: "Server Error" });
-//         }
-
-//         console.log("Business inserted successfully with ID:", result.insertId);
-//         res.status(201).json({
-//             success: true,
-//             data: { id: result.insertId, vendorName, brandName, city, email, phone }
-//         });
-//     });
-// });
-
-// //vendor login
-// app.post("/api/vendor-login", (req, res) => {
-//     const { email, password } = req.body;
-
-//     if (!email || !password) {
-//         return res.status(400).json({ success: false, message: "Please provide email and password" });
-//     }
-
-//     const sql = "SELECT * FROM business WHERE email = ? AND password = ?";
-//     db.query(sql, [email, password], (err, results) => {
-//         if (err) {
-//             console.error("Error querying database:", err);
-//             return res.status(500).json({ success: false, message: "Server Error" });
-//         }
-
-//         if (results.length > 0) {
-//             const vendor = results[0];
-
-//             res.json({
-//                 success: true,
-//                 message: "Login successful",
-//                 vendor: {
-//                     id: vendor.id, // Ensure 'id' exists in the database
-//                     vendorName: vendor.vendor_name,
-//                     brandName: vendor.brand_name,
-//                     city: vendor.city,
-//                     email: vendor.email,
-//                     phone: vendor.phone
-//                 }
-//             });
-//         } else {
-//             res.status(401).json({ success: false, message: "Invalid email or password" });
-//         }
-//     });
-// });
-
-
-
-// //User Login API
-// app.post("/api/login", (req, res) => {
-//     const { email, password } = req.body;
-
-//     if (!email || !password) {
-//         return res.status(400).json({ success: false, message: "Please provide email and password" });
-//     }
-
-//     const sql = "SELECT * FROM users WHERE email = ? AND password = ?";
-//     db.query(sql, [email, password], (err, results) => {
-//         if (err) {
-//             console.error("Error querying database:", err);
-//             return res.status(500).json({ success: false, message: "Server Error" });
-//         }
-
-//         if (results.length > 0) {
-//             res.json({ success: true, message: "Login successful", user: results[0] });
-//         } else {
-//             res.status(401).json({ success: false, message: "Invalid email or password" });
-//         }
-//     });
-// });
 
 
 app.post("/api/users", (req, res) => {
@@ -375,7 +254,6 @@ app.post("/api/user-login", async (req, res) => {
       // Compare hashed password
       const isPasswordValid = bcrypt.compareSync(password, user.password);
       if (!isPasswordValid) {
-        console.log('password not valid');
           return res.status(401).json({ success: false, message: "Invalid email or password" });
       }
 
@@ -409,44 +287,18 @@ app.post("/api/user-login", async (req, res) => {
 app.post("/api/logout", (req, res) => {
   res.clearCookie("authToken");
   res.clearCookie("vendorToken");
-  res.clearCookie("adminToken");
   res.json({ message: "Logged out successfully" });
 });
 
 // Admin login endpoint
-app.post("/api/adminlogin", (req, res) => {
+app.post("/api/admin/login", (req, res) => {
     const { email, password } = req.body;
   
-    try{
-
     if (email === "admin@example.com" && password === "admin123") {
-      const token = jwt.sign(
-        { email:email, role: "admin" },
-
-        process.env.JWT_SECRET,
-        { expiresIn: "10h" }
-    );
-    console.log("Generated JWT token:", token);
-
-    // Set HTTP-only cookie
-    const cookieOption = serialize("adminToken", token, {
-        httpOnly: false,
-        secure: false, // Set to false for development
-        sameSite: "strict",
-        path: "/",
-        maxAge: 36000,
-    });
-
-    res.setHeader("Set-Cookie", [cookieOption]);
-    console.log("Set-Cookie header:", cookieOption); // Log the Set-Cookie header for debugging
-    return res.json({ success: true, message: "Login successful", token });
+      return res.status(200).json({ message: "Login successful" });
     } else {
       return res.status(401).json({ error: "Invalid email or password" });
     }
-    } catch (err) {
-      console.error("Database query error:", err);
-      return res.status(500).json({ success: false, message: "Server Error" });
-      }
   });
   
 
@@ -816,23 +668,7 @@ app.get("/api/halls/:vendorEmail", async (req, res) => {
 });
 
 // DELETE a specific hall by ID
-// app.delete("/api/halls/:id", async (req, res) => {
-//     const {id} = req.params;
-  
-//     try {
-//         const [result] = await db.promise().execute("DELETE FROM function_halls WHERE id = ?", [id]);
 
-  
-//       if (result.affectedRows > 0) {
-//         res.json({ message: "Hall deleted successfully" });
-//       } else {
-//         res.status(404).json({ error: "Hall not found" });
-//       }
-//     } catch (error) {
-//       console.error("Error deleting hall:", error);
-//       res.status(500).json({ error: "Internal Server Error" });
-//     }
-//   });
 // Delete hall only if it is not booked
 app.delete("/api/halls/:id", async (req, res) => {
   const hallId = req.params.id;
@@ -1235,41 +1071,6 @@ app.post("/api/process-refund", async (req, res) => {
 
 
 
-// // Check hall availability
-// app.get("/api/halls/:hallId/availability", async (req, res) => {
-//   const { hallId } = req.params;
-//   try {
-//     const [bookedDates] = await db.promise().query(
-//       "SELECT booked_date FROM hall_availability WHERE hall_id = ?",
-//       [hallId]
-//     );
-//     res.json(bookedDates.map(date => date.booked_date));
-//   } catch (error) {
-//     console.error("Error fetching booked dates:", error);
-//     res.status(500).json({ error: "Failed to fetch availability" });
-//   }
-// });
-
-// // Check specific date availability
-// app.get("/api/halls/:hallId/check-availability", async (req, res) => {
-//   const { hallId } = req.params;
-//   const { date } = req.query;
-  
-//   if (!date) {
-//     return res.status(400).json({ error: "Date parameter is required" });
-//   }
-
-//   try {
-//     const [result] = await db.promise().query(
-//       "SELECT 1 FROM hall_availability WHERE hall_id = ? AND booked_date = ?",
-//       [hallId, date]
-//     );
-//     res.json({ available: result.length === 0 });
-//   } catch (error) {
-//     console.error("Error checking date availability:", error);
-//     res.status(500).json({ error: "Failed to check availability" });
-//   }
-// });
 
 // Check hall availability
 app.get("/api/halls/:hallId/availability", async (req, res) => {
@@ -1370,6 +1171,7 @@ app.put("/api/user1/:userEmail", async (req, res) => {
 
 
 // Submit a booking
+// Submit a booking
 app.post("/api/bookings", async (req, res) => {
   try {
     const { 
@@ -1391,9 +1193,9 @@ app.post("/api/bookings", async (req, res) => {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    // Get hall price
+    // Get hall details (including name and price)
     const [hall] = await db.promise().query(
-      "SELECT price FROM function_halls WHERE id = ?", 
+      "SELECT hall_name, price FROM function_halls WHERE id = ?", 
       [hall_id]
     );
     
@@ -1401,7 +1203,7 @@ app.post("/api/bookings", async (req, res) => {
       return res.status(404).json({ error: "Hall not found" });
     }
 
-    // Calculate total price
+    const hallName = hall[0].hall_name;
     let calculatedTotal = parseFloat(hall[0].price);
     
     // Parse additional services if they exist
@@ -1441,7 +1243,7 @@ app.post("/api/bookings", async (req, res) => {
           guests, 
           event_date, 
           additional_services ? JSON.stringify(additional_services) : null,
-          calculatedTotal, // Use the calculated total
+          calculatedTotal,
           'pending'
         ]
       );
@@ -1450,6 +1252,12 @@ app.post("/api/bookings", async (req, res) => {
       await db.promise().query(
         "INSERT INTO hall_availability (hall_id, booked_date) VALUES (?, ?)",
         [hall_id, event_date]
+      );
+
+      // Add notification for the user
+      await db.promise().query(
+        "INSERT INTO user_notifications (user_email, message) VALUES (?, ?)",
+        [user_email, `Your booking for "${hallName}" on ${new Date(event_date).toLocaleDateString()} was successful!`]
       );
 
       // Commit transaction
@@ -1465,18 +1273,21 @@ app.post("/api/bookings", async (req, res) => {
     } catch (error) {
       // Rollback on error
       await db.promise().rollback();
-      throw error;
+      console.error("Error creating booking:", error);
+      res.status(500).json({ 
+        error: "Failed to create booking",
+        details: error.message 
+      });
     }
 
   } catch (error) {
-    console.error("Error creating booking:", error);
+    console.error("Error in booking endpoint:", error);
     res.status(500).json({ 
-      error: "Failed to create booking",
+      error: "Internal server error",
       details: error.message 
     });
   }
 });
-
 
 
 
@@ -1645,10 +1456,9 @@ app.post('/create-payment-intent', async (req, res) => {
     console.log("success")
     res.json({ clientSecret: paymentIntent.client_secret });
   } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+    res.status(500).json({ error: error.message });
+  }
 });
-
 
 
 
@@ -1668,49 +1478,7 @@ app.get("/api/user/notifications/:userEmail", async (req, res) => {
 });
 
 
-app.post("/api/confirm-booking", async (req, res) => {
-  const { hall_id, userEmail, bookingDate } = req.body;
-  console.log("Received booking confirmation request:", req.body); 
 
-  try {
-    const [rows] = await db.promise().query(
-      "SELECT hall_name, vendor_email FROM function_halls WHERE id = ?",
-      [hall_id]
-    );
-    const { hall_name, vendor_email } = rows[0];
-    console.log("row: ",rows)
-    console.log("Sending email to vendor:", vendor_email);
-    await sendEmailConfirmation(
-      vendor_email,
-      "New Hall Booking Confirmation",
-      `<p>Your hall <strong>${hall_name}</strong> has been booked on <strong>${bookingDate}</strong>.</p>`
-    );
-
-    console.log("Sending email to user:", userEmail);
-    await sendEmailConfirmation(
-      userEmail,
-      "Your Booking Confirmation",
-      `<p>Thank you for booking <strong>${hall_name}</strong> on <strong>${bookingDate}</strong>! Your booking is confirmed.</p>`
-    );
-
-    console.log("Emails sent successfully.");
-    res.json({ success: true, message: "Emails sent successfully" });
-  } catch (error) {
-    console.error("Error in /confirm-booking:", error);
-    res.status(500).json({ success: false, message: "Email sending failed" });
-  }
-});
-
-app.post("/api/admin/approve-hall", async (req, res)=>{
-  const {hallId,hallName, vendorEmail}=req.body;
-  console.log("haiiii",hallName, vendorEmail)
-  console.log("Sending email to vendor:", vendorEmail);
-  await sendEmailConfirmation(
-    vendorEmail,
-    "Your hall is approved",
-    `<p>Your hall <strong>${hallName}</strong> has been approved by the admin of Event Heaven <strong></strong>.</p>`
-  );
-});
 
 
 db.connect((err) => {
@@ -1730,9 +1498,11 @@ db.connect((err) => {
     createHallAvailabilityTable(); // Add this line
     createBookingTable3(); // Also ensure this is called
     createUserPaymentTable(); // And this one
-
     createUserNotificationsTable();
-    createUserHallBookings()
+
+
+    createUserHallBookings();
+    // addcolumntouser_notification();
 
     const port = 8500;
     app.listen(port, () => {

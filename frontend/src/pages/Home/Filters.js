@@ -3,7 +3,7 @@ import styles from './Filters.module.css';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
-const Filters = ({ filters = {}, onFilterChange }) => {  // ✅ Ensure filters is always an object
+const Filters = ({ filters = {}, onFilterChange }) => {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
@@ -13,7 +13,7 @@ const Filters = ({ filters = {}, onFilterChange }) => {  // ✅ Ensure filters i
         <div className={styles.filterGroup}>
           <label>Price Range</label>
           <select 
-            value={filters?.price || ""}  // ✅ Default value to prevent undefined error
+            value={filters?.price || ""}
             onChange={(e) => onFilterChange('price', e.target.value)}
           >
             <option value="">All Prices</option>
@@ -26,7 +26,7 @@ const Filters = ({ filters = {}, onFilterChange }) => {  // ✅ Ensure filters i
         <div className={styles.filterGroup}>
           <label>Capacity</label>
           <select 
-            value={filters?.capacity || ""}  // ✅ Default value
+            value={filters?.capacity || ""}
             onChange={(e) => onFilterChange('capacity', e.target.value)}
           >
             <option value="">All Capacities</option>
@@ -50,7 +50,6 @@ const Filters = ({ filters = {}, onFilterChange }) => {  // ✅ Ensure filters i
             <option value="Hyderabad">Hyderabad</option>
             <option value="Kolkata">Kolkata</option>
             <option value="Kochi">Kochi</option>
-
           </select>
         </div>
 
@@ -70,18 +69,18 @@ const Filters = ({ filters = {}, onFilterChange }) => {  // ✅ Ensure filters i
         <div className={styles.filterGroup}>
           <label>Check Availability</label>
           <DatePicker
-            selected={filters?.date || null}
+            selected={filters?.date}
             onChange={(date) => onFilterChange('date', date)}
             dateFormat="MM/dd/yyyy"
             minDate={tomorrow}
             placeholderText="Select Date"
             className={styles.datePicker}
+            isClearable
           />
         </div>
       </div>
     </div>
   );
 };
-
 
 export default Filters;

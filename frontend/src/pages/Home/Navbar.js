@@ -10,7 +10,10 @@ import styles from './Navbar.module.css';
 const Navbar = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [taglineText, setTaglineText] = useState('');
+
+
+  const [darkMode, setDarkMode] = useState(true);
+  const [taglineText, setTaglineText] = useState("");
   const [isTyping, setIsTyping] = useState(true);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
