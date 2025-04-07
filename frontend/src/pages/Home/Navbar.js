@@ -9,7 +9,7 @@ import { jwtDecode } from "jwt-decode";
 const Navbar = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [taglineText, setTaglineText] = useState("");
   const [isTyping, setIsTyping] = useState(true);
   const fullTagline = "Book Your Perfect Venue – Effortlessly!";
