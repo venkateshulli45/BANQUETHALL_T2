@@ -1,17 +1,21 @@
-/* Top Bar */
-.topBar {
-  background: linear-gradient(135deg, #a51d50, #ff4d79);
-  color: white;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 10px 20px;
-  font-size: 14px;
+/* Theme Variables */
+:root {
+  --header-bg: linear-gradient(90deg, #d9255b, #ff4d79);
+  --topbar-bg: linear-gradient(135deg, #a51d50, #ff4d79);
+  --topbutton-bg: #f95691;
+  --text-color: white;
+  --dropdown-bg: white;
+  --dropdown-text: black;
+  --dropdown-hover: #f0f0f0;
 }
-.topBar .topButton{
-  background-color:#f95691;
-  border-radius: 8px;
-  border:none;
+
+[data-theme="dark"] {
+  --header-bg: linear-gradient(90deg, #8a1a3d, #b8325a);
+  --topbar-bg: linear-gradient(135deg, #6d1439, #a51d50);
+  --topbutton-bg: #c44578;
+  --dropdown-bg: #333;
+  --dropdown-text: white;
+  --dropdown-hover: #555;
 }
 
 /* Navbar Container */
@@ -21,41 +25,75 @@
   top: 0;
   left: 0;
   z-index: 1000;
-  background: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Main Navbar */
+/* Top Announcement Bar */
+.topBar {
+  background: var(--topbar-bg);
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  padding: 8px 20px;
+  font-size: 14px;
+}
+
+.topButton {
+  background-color: var(--topbutton-bg);
+  border-radius: 8px;
+  border: none;
+  color: white;
+  padding: 4px 12px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s;
+}
+
+.topButton:hover {
+  transform: scale(1.05);
+}
+
+/* Main Navigation */
 .mainNav {
+  background: var(--header-bg);
+  color: var(--text-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 20px;
-  background: linear-gradient(90deg, #d9255b, #ff4d79);
-  color: white;
-  flex-wrap: nowrap; /* Prevent wrapping */
+  padding: 0 20px;
+  height: 60px;
 }
 
-/* 3D Tagline with typing animation */
+/* Logo and Tagline */
+.logoMenu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logoMenu h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
 .tagline3D {
   font-weight: bold;
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2),
                3px 3px 0 rgba(0, 0, 0, 0.1);
-  color: white;
-  margin-left: 15px;
   transform: perspective(500px) rotateY(5deg);
   transition: transform 0.3s;
-  display: block;
-  min-width: 100px;
   height: 24px;
-  position: relative;
+}
+
+.tagline3D:hover {
+  transform: perspective(500px) rotateY(0deg);
 }
 
 .cursor {
   display: inline-block;
   width: 2px;
   height: 18px;
-  background-color: white;
+  background-color: currentColor;
   margin-left: 2px;
   vertical-align: middle;
   animation: blink 1s infinite;
@@ -66,308 +104,82 @@
   50% { opacity: 0; }
 }
 
-.tagline3D:hover {
-  transform: perspective(500px) rotateY(0deg);
-}
-
+/* Right Side Icons */
 .icons {
   display: flex;
-  gap: 30px;
+  gap: 25px;
   align-items: center;
-}
-
-.logoMenu {
-  display: flex;
-  align-items: center;
-}
-
-.logoMenu h2 {
-  margin-right: 15px;
-}
-
-.navLinks {
-  display: flex;
-  gap: 20px;
-}
-
-.navItem {
-  position: relative;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 10px 15px;
-  color: white;
-}
-
-.navItem:hover {
-  color: #ffdd57;
 }
 
 /* Theme Toggle */
 .themeToggle {
-  cursor: pointer;
-}
-
-.themeToggle .icon {
-  font-size: 1.5em;
-  transition: transform 0.3s ease;
-}
-
-.themeToggle .icon:hover {
-  transform: rotate(180deg);
-}
-
-/* Mega Dropdown */
-.megaDropdown {
-  position: absolute;
-  background: white;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  min-width: 200px;
-  left: 0;
-  top: 100%;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-}
-
-.dropdownSection h4 {
-  color: #d9255b;
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-.dropdownSection a {
-  display: block;
-  color: black;
-  text-decoration: none;
-  font-size: 14px;
-  padding: 5px 0;
-}
-
-.dropdownSection a:hover {
-  color: #d9255b;
-}
-
-/* Search Box */
-.searchContainer {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-}
-
-.searchContainer .icon {
-  font-size: 1.5em;
-  cursor: pointer;
-}
-
-.searchBox {
-  position: absolute;
-  top: 50px;
-  left: -300%;
-  transform: translateX(-50%);
-  display: flex;
-  background: white;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.searchBox input {
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-right: 5px;
-}
-
-.searchButton {
-  background: linear-gradient(135deg, #d9255b, #ff4d79);
-  color: white;
+  background: transparent;
   border: none;
-  padding: 5px 10px;
   cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+}
+
+.themeToggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.icon {
+  font-size: 1.5rem;
+  color: inherit;
 }
 
 /* User Dropdown */
 .userDropdown {
   position: relative;
-  cursor: pointer;
-}
-
-.userDropdown .icon {
-  font-size: 1.5em;
 }
 
 .loginBox {
   position: absolute;
-  top: 40px;
   right: 0;
-  width: 150px;
-  background: white;
+  top: 50px;
+  background: var(--dropdown-bg);
+  color: var(--dropdown-text);
+  border-radius: 8px;
   padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-width: 150px;
   display: flex;
   flex-direction: column;
-  z-index: 1000;
-}
-
-.loginBox a,
-.loginBox button {
-  padding: 8px;
-  text-decoration: none;
-  color: black;
-  display: block;
-  background: none;
-  border: none;
-  text-align: left;
-  width: 100%;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.loginBox a:hover,
-.loginBox button:hover {
-  background: #f0f0f0;
+  gap: 8px;
+  z-index: 1001;
 }
 
 .authButton {
   background: none;
   border: none;
-  color: black;
+  color: inherit;
   cursor: pointer;
   text-align: left;
-  padding: 8px;
-  width: 100%;
-  font-weight: 500;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
 }
 
 .authButton:hover {
-  background: #f0f0f0;
-  color: #d9255b;
+  background: var(--dropdown-hover);
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
-  .mainNav {
-    padding: 10px 20px;
-  }
-
-  .searchBox {
-    position: relative;
-    left: 120px;
-  }
-
-  .icons {
-    gap: 20px;
-  }
-  
-  .tagline3D {
-    min-width: 300px;
-  }
-}
-
 @media (max-width: 768px) {
-  .logoMenu {
-    display: flex;
-    align-items: center;
-  }
-  
-  .tagline3D {
-    font-size: 14px;
-    margin-left: 10px;
-    min-width: 200px;
-  }
-  
-  .mainNav {
-    flex-wrap: nowrap; /* Ensure no wrapping on mobile */
-    justify-content: space-between;
-  }
-  
-  .topBar {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .searchContainer .icon {
-    font-size: 1.2em;
-  }
-
-  .searchBox {
-    width: 90%;
-  }
-
-  .icons {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    position: static; /* Remove absolute positioning */
-  }
-
-  .mainNav {
-    padding: 10px 15px;
-  }
-  
-  /* Fix for user dropdown in mobile */
-  .userDropdown {
-    position: relative; /* Changed to relative for better positioning */
-  }
-  
-  .loginBox {
-    right: 0; /* Align to the right of the profile icon */
-    top: 40px; /* Position below the icon */
-    position: absolute;
-    width: 150px; /* Fixed width */
-    z-index: 1500; /* Higher z-index to ensure visibility */
-  }
-}
-
-@media (max-width: 480px) {
   .tagline3D {
     display: none;
   }
   
   .mainNav {
-    padding: 8px 15px;
-    position: relative; /* Added for absolute positioning context */
-    flex-wrap: nowrap;
+    padding: 0 15px;
   }
   
-  .logoMenu h2 {
-    font-size: 20px;
-    margin-right: 0;
-  }
-  
-  .topBar {
-    padding: 5px 10px;
-  }
-
   .icons {
-    position: static; /* Remove absolute positioning */
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .themeToggle .icon,
-  .userDropdown .icon {
-    font-size: 1.3em;
-  }
-
-  .searchBox input {
-    width: 100%;
-    font-size: 0.9em;
-  }
-
-  .loginBox {
-    width: 120px;
-    right: 0; /* Align to the right edge of the icon */
-    top: 40px; /* Position below the icon */
-  }
-
-  .navItem {
-    font-size: 14px;
-    padding: 8px 10px;
+    gap: 15px;
   }
 }

@@ -8,7 +8,7 @@ import ProfileSection from "./ProfileSection";
 import BookingsSection from "./BookingsSection";
 import NotificationsSection from "./NotificationsSection";
 import SupportSection from "./SupportSection";
-import "./UserDashboard.css";
+import "./UserDashboard.module.css";
 
 const UserDashboard = () => {
   const [activeSection, setActiveSection] = useState("Profile");

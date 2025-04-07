@@ -1,17 +1,17 @@
-/* Home.module.css */
+/* home.module.css */
 
 .home {
     padding: 20px;
-    /* font-family: Arial, sans-serif; */
-    background-color: rgb(233, 234, 236);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Grid layout ensuring 3 templates per row */
 .con1 {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columns per row */
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     margin: 30px 50px;
+    color: black;
 }
 
 /* Hall card design */
@@ -20,7 +20,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease;
     cursor: pointer;
     padding: 10px;
     text-align: center;
@@ -28,39 +28,34 @@
     flex-direction: column;
     align-items: center;
 }
-.hall1:hover{
+.hall1:hover {
     transform: scale(1.05);
     background-color: aliceblue;
-} 
-
-/* Ensuring image fits properly without cropping */
+}
 
 .hall1 img {
     width: 100%;
     height: 180px;
-    object-fit: cover; /* Change from contain to cover */
-    border-radius: 8px;/* Light background for the image area */
+    object-fit: cover;
+    border-radius: 8px;
 }
 
-/* Data section */
 .halldata {
     padding: 10px;
 }
 
-/* Specifications (Price, Rating, etc.) */
 .spec {
     display: flex;
-    justify-content: space-around; /* Changed from space-between to space-around */
+    justify-content: space-around;
     align-items: center;
     font-size: 14px;
     margin-top: 10px;
-    width: 100%; /* Ensure it takes full width */
-    padding: 0 10px; /* Add some horizontal padding */
+    width: 100%;
+    padding: 0 10px;
 }
 
-/* Optional: Add some spacing between the items */
 .spec div {
-    margin: 0 5px; /* Adds spacing between each item */
+    margin: 0 5px;
 }
 
 /* Pagination */
@@ -70,7 +65,7 @@
     margin: 20px 0;
 }
 
-.pagination button {
+.paginationButton {
     background: #007bff;
     color: #fff;
     border: none;
@@ -80,20 +75,26 @@
     cursor: pointer;
 }
 
-.pagination button:disabled {
+.paginationButton:disabled {
     background: #ccc;
     cursor: not-allowed;
+}
+
+.noResults {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 50px;
 }
 
 /* Responsive Design */
 @media screen and (max-width: 1024px) {
     .con1 {
-        grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media screen and (max-width: 768px) {
     .con1 {
-        grid-template-columns: repeat(1, 1fr); /* 1 column on mobile */
+        grid-template-columns: repeat(1, 1fr);
     }
 }

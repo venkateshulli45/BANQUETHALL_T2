@@ -1,28 +1,26 @@
-import React, { useState, useRef, useEffect } from "react";
-import { IoPersonCircle } from "react-icons/io5";
-import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
-import { Link, useNavigate } from "react-router-dom";
-import styles from "./Navbar.module.css";
-import { useCookies } from "react-cookie";
-import { jwtDecode } from "jwt-decode";
+import React, { useState, useRef, useEffect } from 'react';
+import { IoPersonCircle } from 'react-icons/io5';
+import { MdOutlineDarkMode, MdOutlineLightMode } from 'react-icons/md';
+import { Link, useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { jwtDecode } from 'jwt-decode';
+import { useTheme } from '../../context/ThemeContext';
+import styles from './Navbar.module.css';
 
 const Navbar = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
-  const [taglineText, setTaglineText] = useState("");
+  const [taglineText, setTaglineText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
-  const fullTagline = "Book Your Perfect Venue – Effortlessly!";
-  const typingSpeed = 100; // milliseconds per character
-  const pauseDelay = 1000; // milliseconds to pause when complete
-
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
-  const [cookies] = useCookies(["authToken"]);
+  const [cookies] = useCookies(['authToken']);
+  const { theme, toggleTheme } = useTheme('dark');
 
   const user = cookies.authToken ? jwtDecode(cookies.authToken) : null;
-  const userEmail = user ? user.email : null; // Retrieve email from decoded token
-  
+  const fullTagline = "Book Your Perfect Venue – Effortlessly!";
+
+  // Authentication state
   useEffect(() => {
     setIsAuthenticated(!!user);
   }, [user]);
@@ -31,81 +29,54 @@ const Navbar = () => {
   useEffect(() => {
     let timeoutId;
     
-    if (isTyping) {
-      if (taglineText.length < fullTagline.length) {
-        timeoutId = setTimeout(() => {
-          setTaglineText(fullTagline.substring(0, taglineText.length + 1));
-        }, typingSpeed);
-      } else {
-        // Finished typing, pause before clearing
-        timeoutId = setTimeout(() => {
-          setIsTyping(false);
-        }, pauseDelay);
-      }
-    } else {
-      // Reset and start over
+    if (isTyping && taglineText.length < fullTagline.length) {
       timeoutId = setTimeout(() => {
-        setTaglineText("");
+        setTaglineText(fullTagline.substring(0, taglineText.length + 1));
+      }, 100);
+    } else if (isTyping) {
+      timeoutId = setTimeout(() => setIsTyping(false), 1000);
+    } else {
+      timeoutId = setTimeout(() => {
+        setTaglineText('');
         setIsTyping(true);
-      }, pauseDelay / 2);
+      }, 500);
     }
     
-    return () => {
-      clearTimeout(timeoutId);
-    };
+    return () => clearTimeout(timeoutId);
   }, [taglineText, isTyping]);
 
-  const toggleDropdown = (type) => {
-    setActiveDropdown(activeDropdown === type ? null : type);
-  };
-
-  const toggleTheme = () => {
-    setDarkMode(!darkMode);
-    // Logic to apply dark/light theme can be added here
-    document.body.classList.toggle("dark-mode");
-  };
-
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Close dropdown when clicking outside
-      if (
-        dropdownRef.current && !dropdownRef.current.contains(event.target)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setActiveDropdown(null);
       }
     };
     
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Auth handlers
   const handleAuth = (type) => {
-    if (type === "logout") {
-      document.clearCookie('authToken');
+    if (type === 'logout') {
+      document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
       setIsAuthenticated(false);
       navigate('/');
     } else {
-      navigate(type === "login" ? "/userLogin" : "/UserSignup");
+      navigate(type === 'login' ? '/userLogin' : '/UserSignup');
     }
     setActiveDropdown(null);
-  };
-  
-  const handleLogout = async () => {
-    try {
-      await fetch("http://localhost:8500/api/logout", {
-        method: "POST",
-        credentials: "include",
-      });
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
   };
 
   return (
     <div className={styles.navbarContainer}>
-      {/* Main Navbar */}
+      {/* Top Announcement Bar */}
+      {/* <div className={styles.topBar}>
+        <button className={styles.topButton}>Special Offer!</button>
+      </div> */}
+
+      {/* Main Navigation */}
       <div className={styles.mainNav}>
         <div className={styles.logoMenu}>
           <h2>Event Heaven</h2>
@@ -115,34 +86,54 @@ const Navbar = () => {
           </span>
         </div>
 
-        {/* Icons */}
         <div className={styles.icons}>
-          {/* Theme Switcher - Only show if authenticated */}
-          {isAuthenticated && (
-            <div className={styles.themeToggle} onClick={toggleTheme}>
-              {darkMode ? 
-                <MdOutlineLightMode className={styles.icon} /> : 
-                <MdOutlineDarkMode className={styles.icon} />
-              }
-            </div>
-          )}
+          {/* Theme Toggle */}
+          <button 
+            onClick={toggleTheme}
+            className={styles.themeToggle}
+            aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+          >
+            {theme === 'light' ? (
+              <MdOutlineDarkMode className={styles.icon} />
+            ) : (
+              <MdOutlineLightMode className={styles.icon} />
+            )}
+          </button>
 
           {/* User Dropdown */}
           <div className={styles.userDropdown} ref={dropdownRef}>
-            <IoPersonCircle className={styles.icon} onClick={() => toggleDropdown("profile")} />
-            {activeDropdown === "profile" && (
+            <IoPersonCircle
+              className={styles.icon}
+              onClick={() => setActiveDropdown(activeDropdown === 'profile' ? null : 'profile')}
+              aria-label="User profile"
+            />
+            
+            {activeDropdown === 'profile' && (
               <div className={styles.loginBox}>
                 {isAuthenticated ? (
                   <>
                     <Link to="/UserDashboard">Profile</Link>
-{/*                     
-                    <Link to="/settings">Settings</Link> */}
-                    <button onClick={() => handleLogout()} className={styles.authButton}>Logout</button>
+                    <button 
+                      onClick={() => handleAuth('logout')} 
+                      className={styles.authButton}
+                    >
+                      Logout
+                    </button>
                   </>
                 ) : (
                   <>
-                    <button onClick={() => handleAuth("login")} className={styles.authButton}>Login</button>
-                    <button onClick={() => handleAuth("signup")} className={styles.authButton}>Signup</button>
+                    <button 
+                      onClick={() => handleAuth('login')} 
+                      className={styles.authButton}
+                    >
+                      Login
+                    </button>
+                    <button 
+                      onClick={() => handleAuth('signup')} 
+                      className={styles.authButton}
+                    >
+                      Signup
+                    </button>
                   </>
                 )}
               </div>

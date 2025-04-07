@@ -1,11 +1,5 @@
-/* Add your global styles here */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-.root {
+/* app.css or index.css */
+:root {
     --bg-color: #fff1f5;
     --text-color: #333;
     --text-secondary: #666666;
@@ -25,5 +19,57 @@ body {
     --cancel-hover: #eeeeee;
     --shadow-color: rgba(0, 0, 0, 0.1);
     --border-color: #e0e0e0;
-    
   }
+  
+  /* Dark Theme Variables */
+  [data-theme="dark"] {
+    --bg-color: #121212;
+    --text-color: #f5f5f5;
+    --text-secondary: #bbbbbb;
+    --accent-color: #bb86fc;
+    --accent-hover: #985eff;
+    --input-border: #444;
+    --input-bg: #1f1f1f;
+    --disabled-bg: #2a2a2a;
+    --header-bg: linear-gradient(135deg, #3f3f3f 0%, #222 100%);
+    --sidebar-bg: linear-gradient(180deg, #222 0%, #333 100%);
+    --content-bg: #1e1e1e;
+    --card-bg: #2c2c2c;
+    --focus-shadow: rgba(187, 134, 252, 0.2);
+    --cancel-bg: #2f2f2f;
+    --cancel-text: #aaaaaa;
+    --cancel-border: #555;
+    --cancel-hover: #3a3a3a;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --border-color: #444;
+  }
+  
+  /* body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  } */
+
+  .light {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+  }
+  
+  .dark {
+    --bg-color: #1a1a1a;
+    --text-color: #ffffff;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  
