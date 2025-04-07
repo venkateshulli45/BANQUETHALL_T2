@@ -1235,21 +1235,6 @@ app.post("/api/process-refund", async (req, res) => {
 
 
 
-// // Check hall availability
-// app.get("/api/halls/:hallId/availability", async (req, res) => {
-//   const { hallId } = req.params;
-//   try {
-//     const [bookedDates] = await db.promise().query(
-//       "SELECT booked_date FROM hall_availability WHERE hall_id = ?",
-//       [hallId]
-//     );
-//     res.json(bookedDates.map(date => date.booked_date));
-//   } catch (error) {
-//     console.error("Error fetching booked dates:", error);
-//     res.status(500).json({ error: "Failed to fetch availability" });
-//   }
-// });
-
 // // Check specific date availability
 // app.get("/api/halls/:hallId/check-availability", async (req, res) => {
 //   const { hallId } = req.params;
