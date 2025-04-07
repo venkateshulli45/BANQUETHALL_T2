@@ -84,6 +84,17 @@ body {
 .navItem:hover {
   background-color: var(--tertiary-color);
 }
+li button{
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: background-color 0.2s;
+  background: none;
+  border: none;
+  color: white;
+  font-size: medium;
+}
 
 /* Content Area */
 .contentInner {

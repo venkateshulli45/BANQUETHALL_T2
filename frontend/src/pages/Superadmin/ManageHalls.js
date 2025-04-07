@@ -9,11 +9,11 @@ const ManageHalls = () => {
   useEffect(() => {
     const fetchHalls = async () => {
       try {
-        const response = await fetch("http://localhost:8500/api/halls");
+        const response = await fetch('http://localhost:8500/api/halls');
         const data = await response.json();
         setHalls(data);
       } catch (error) {
-        console.error("Error fetching halls:", error);
+        console.error('Error fetching halls:', error);
       }
     };
 
@@ -22,6 +22,32 @@ const ManageHalls = () => {
 
   const handleViewDetails = (hallId) => {
     navigate(`/hall-details/${hallId}`);
+  };
+
+  const handleApprove = async (hallId,hallName, vendorEmail) => {
+    try {
+      const response = await fetch('http://localhost:8500/api/admin/approve-hall', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ hallId, hallName, vendorEmail }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        alert('Hall approved and vendor notified.');
+        // Optionally, refresh the halls list to reflect the updated status
+        setHalls((prevHalls) =>
+          prevHalls.map((hall) =>
+            hall.id === hallId ? { ...hall, statusOfHall: 1 } : hall
+          )
+        );
+      } else {
+        alert('Failed to approve hall: ' + result.message);
+      }
+    } catch (error) {
+      console.error('Error approving hall:', error);
+      alert('An error occurred while approving the hall.');
+    }
   };
 
   return (
@@ -37,6 +63,7 @@ const ManageHalls = () => {
               <th>City</th>
               <th>Status</th>
               <th>Full Details</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -46,20 +73,21 @@ const ManageHalls = () => {
                 <td>{hall.vendor_email}</td>
                 <td>{hall.capacity}</td>
                 <td>{hall.city}</td>
-                <td className={
-                    hall.statusOfHall === 1 
-                      ? styles.approved 
-                      : hall.statusOfHall === 0 
-                        ? styles.rejected 
-                        : styles.pending
-                  }>
-                    {hall.statusOfHall === 1 
-                      ? "Approved" 
-                      : hall.statusOfHall === 0 
-                        ? "Rejected" 
-                        : "Under Process"}
+                <td
+                  className={
+                    hall.statusOfHall === 1
+                      ? styles.approved
+                      : hall.statusOfHall === 0
+                      ? styles.rejected
+                      : styles.pending
+                  }
+                >
+                  {hall.statusOfHall === 1
+                    ? 'Approved'
+                    : hall.statusOfHall === 0
+                    ? 'Rejected'
+                    : 'Under Process'}
                 </td>
-
                 <td>
                   <button
                     type="button"
@@ -68,6 +96,17 @@ const ManageHalls = () => {
                   >
                     Click Here
                   </button>
+                </td>
+                <td>
+                  {hall.statusOfHall !== 1 && (
+                    <button
+                      type="button"
+                      className={styles.approveButton}
+                      onClick={() => handleApprove(hall.id,hall.hall_name, hall.vendor_email)}
+                    >
+                      Approve
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

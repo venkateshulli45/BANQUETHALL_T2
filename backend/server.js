@@ -32,6 +32,8 @@ import vendorAuthRoutes from './routes/vendorAuthRoutes.js';
 import forgotPasswordRoutes from'./routes/forgotPasswordRoutes.js';
 import forgotPasswordVendorRoutes from './routes/forgotPasswordVendorRoutes.js';
 import { format } from "date-fns";
+import { sendEmailConfirmation } from './config/mailer.js';
+
 
 
 dotenv.config();
@@ -373,6 +375,7 @@ app.post("/api/user-login", async (req, res) => {
       // Compare hashed password
       const isPasswordValid = bcrypt.compareSync(password, user.password);
       if (!isPasswordValid) {
+        console.log('password not valid');
           return res.status(401).json({ success: false, message: "Invalid email or password" });
       }
 
@@ -406,18 +409,44 @@ app.post("/api/user-login", async (req, res) => {
 app.post("/api/logout", (req, res) => {
   res.clearCookie("authToken");
   res.clearCookie("vendorToken");
+  res.clearCookie("adminToken");
   res.json({ message: "Logged out successfully" });
 });
 
 // Admin login endpoint
-app.post("/api/admin/login", (req, res) => {
+app.post("/api/adminlogin", (req, res) => {
     const { email, password } = req.body;
   
+    try{
+
     if (email === "admin@example.com" && password === "admin123") {
-      return res.status(200).json({ message: "Login successful" });
+      const token = jwt.sign(
+        { email:email, role: "admin" },
+
+        process.env.JWT_SECRET,
+        { expiresIn: "10h" }
+    );
+    console.log("Generated JWT token:", token);
+
+    // Set HTTP-only cookie
+    const cookieOption = serialize("adminToken", token, {
+        httpOnly: false,
+        secure: false, // Set to false for development
+        sameSite: "strict",
+        path: "/",
+        maxAge: 36000,
+    });
+
+    res.setHeader("Set-Cookie", [cookieOption]);
+    console.log("Set-Cookie header:", cookieOption); // Log the Set-Cookie header for debugging
+    return res.json({ success: true, message: "Login successful", token });
     } else {
       return res.status(401).json({ error: "Invalid email or password" });
     }
+    } catch (err) {
+      console.error("Database query error:", err);
+      return res.status(500).json({ success: false, message: "Server Error" });
+      }
   });
   
 
@@ -1622,6 +1651,7 @@ app.post('/create-payment-intent', async (req, res) => {
 
 
 
+
 // Add this to your server.js
 app.get("/api/user/notifications/:userEmail", async (req, res) => {
   try {
@@ -1635,6 +1665,51 @@ app.get("/api/user/notifications/:userEmail", async (req, res) => {
     console.error("Error fetching user notifications:", error);
     res.status(500).json({ error: "Failed to fetch notifications" });
   }
+});
+
+
+app.post("/api/confirm-booking", async (req, res) => {
+  const { hall_id, userEmail, bookingDate } = req.body;
+  console.log("Received booking confirmation request:", req.body); 
+
+  try {
+    const [rows] = await db.promise().query(
+      "SELECT hall_name, vendor_email FROM function_halls WHERE id = ?",
+      [hall_id]
+    );
+    const { hall_name, vendor_email } = rows[0];
+    console.log("row: ",rows)
+    console.log("Sending email to vendor:", vendor_email);
+    await sendEmailConfirmation(
+      vendor_email,
+      "New Hall Booking Confirmation",
+      `<p>Your hall <strong>${hall_name}</strong> has been booked on <strong>${bookingDate}</strong>.</p>`
+    );
+
+    console.log("Sending email to user:", userEmail);
+    await sendEmailConfirmation(
+      userEmail,
+      "Your Booking Confirmation",
+      `<p>Thank you for booking <strong>${hall_name}</strong> on <strong>${bookingDate}</strong>! Your booking is confirmed.</p>`
+    );
+
+    console.log("Emails sent successfully.");
+    res.json({ success: true, message: "Emails sent successfully" });
+  } catch (error) {
+    console.error("Error in /confirm-booking:", error);
+    res.status(500).json({ success: false, message: "Email sending failed" });
+  }
+});
+
+app.post("/api/admin/approve-hall", async (req, res)=>{
+  const {hallId,hallName, vendorEmail}=req.body;
+  console.log("haiiii",hallName, vendorEmail)
+  console.log("Sending email to vendor:", vendorEmail);
+  await sendEmailConfirmation(
+    vendorEmail,
+    "Your hall is approved",
+    `<p>Your hall <strong>${hallName}</strong> has been approved by the admin of Event Heaven <strong></strong>.</p>`
+  );
 });
 
 
@@ -1655,9 +1730,8 @@ db.connect((err) => {
     createHallAvailabilityTable(); // Add this line
     createBookingTable3(); // Also ensure this is called
     createUserPaymentTable(); // And this one
+
     createUserNotificationsTable();
-
-
     createUserHallBookings()
 
     const port = 8500;

@@ -266,7 +266,7 @@ export const createHallAvailabilityTable = async () => {
 export const createUserNotificationsTable = async () => {
   try {
     await db.promise().query(`
-      CREATE TABLE IF user_notifications (
+      CREATE TABLE IF NOT user_notifications (
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_email VARCHAR(255) NOT NULL,
         message TEXT NOT NULL,
@@ -288,7 +288,7 @@ export const createUserNotificationsTable = async () => {
 export const createUserHallBookings= async () => {
   try {
     await db.promise().query(`
-      CREATE TABLE user_hall_bookings (
+      CREATE TABLE IF NOT user_hall_bookings (
     booking_id INT AUTO_INCREMENT PRIMARY KEY,
     hall_id INT NOT NULL,
     user_email VARCHAR(255) NOT NULL,

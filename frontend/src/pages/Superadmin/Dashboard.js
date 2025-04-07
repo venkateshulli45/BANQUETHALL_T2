@@ -6,7 +6,8 @@ import {
   faUsers,
   faStore,
   faExclamationCircle,
-  faBuilding 
+  faBuilding,
+  faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import ManageUsers from "./ManageUsers";
 import ManageVendors from "./ManageVendors";
@@ -20,6 +21,18 @@ const Dashboard = () => {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      await fetch("http://localhost:8500/api/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      window.location.href = "/adminlogin";
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  }
 
   return (
     <div 
@@ -68,6 +81,14 @@ const Dashboard = () => {
               <FontAwesomeIcon icon={faExclamationCircle} />
               <span>Payment Display</span>
             </li>
+            <li
+            className={styles.navItem}
+            ><button onClick={handleLogout}>
+              <FontAwesomeIcon icon={faRightFromBracket} />
+              <span>Logout</span>
+            </button>
+
+            </li>
           </ul>
         </nav>
       </aside>
@@ -79,6 +100,7 @@ const Dashboard = () => {
           {selectedMenu === "manageVendors" && <ManageVendors />}
           {selectedMenu === "managehalls" && <ManageUser />}
           {selectedMenu === "issues" && <IssuesDisplay />}
+          {selectedMenu === "logout"}
         </div>
       </main>
     </div>

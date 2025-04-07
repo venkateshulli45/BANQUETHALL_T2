@@ -6,6 +6,7 @@ import { jwtDecode } from "jwt-decode"; // Ensure correct import
 const ProtectedRoute = ({ role }) => {
     const userToken = getCookie("authToken") || null;
     const vendorToken = getCookie("vendorToken") || null;
+    const adminToken = getCookie("adminToken") || null;
 
     // If no valid token exists, redirect
     if (role === "user" && !userToken) {
@@ -13,6 +14,9 @@ const ProtectedRoute = ({ role }) => {
     }
     if (role === "vendor" && !vendorToken) {
         return <Navigate to="/vendorlogin" replace />;
+    }
+    if (role === "admin" && !adminToken){
+        return <Navigate to="/adminlogin" replace />;
     }
 
     try {
@@ -23,9 +27,12 @@ const ProtectedRoute = ({ role }) => {
         if (role === "vendor" && typeof vendorToken === "string" && vendorToken.trim() !== "") {
             jwtDecode(vendorToken);
         }
-    } catch (error) {
+        if (role === 'admin' && typeof adminToken === "string" && adminToken.trim(0) !== "" ) {
+            jwtDecode(adminToken);
+        }
+        } catch (error) {
         console.error("Error decoding token:", error);
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/userlogin" replace />;
     }
 
     return <Outlet />;

@@ -15,11 +15,12 @@ import ForgotPassword from './Components/ForgotPassword';
 import ForgotPasswordVendor from './Components/ForgotPasswordVendor';
 import ProtectedRoute from './Components/protected/ProtectedRoute.js';
 import RedirectRoute from './Components/protected/RedirectRoute.js';
-
 import HomeDetails from './pages/Home/homedetails';
 import UserPayment from './pages/User/UserPayment';
 // import UserProfile from './pages/User/UserProfile';
 import HallBooking from './pages/User/HallBooking';
+
+import AdminSignin from './pages/Superadmin/adminLogin'
 
 import UserDashboard from './pages/User/UserDashboard';
 import './App.css';
@@ -31,6 +32,7 @@ function App() {
     <BrowserRouter>
       <Routes>
       <Route element={<RedirectRoute />}>
+        <Route path='/adminlogin' element={<AdminSignin />} />
           <Route path="/userlogin" element={<UserLogin />} />
           <Route path="/usersignup" element={<UserSignup />} />
           <Route path="/VendorSignup" element={<VendorSignup />} />
@@ -51,15 +53,16 @@ function App() {
           <Route path="/Halldetails" element={<Halldetails />} />
         </Route>
         
+
         
         
-        
-      
-        <Route path="/dashboard" element={<Dashboard/>}/>
-        <Route path="/payment" element={<Payment />} />
-        <Route path="/hall-details/:hallId" element={<MoreHallDetails />} />
-        <Route path="/refund/:hallId" element={<RefundPage />} />  {/* Refund Page Route */}
-        
+        <Route element={<ProtectedRoute role="admin" />}>
+          <Route path="/dashboard" element={<Dashboard/>}/>
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/hall-details/:hallId" element={<MoreHallDetails />} />
+          <Route path="/refund/:hallId" element={<RefundPage />} />  {/* Refund Page Route */}
+        </Route>
+          
        
 
         <Route path="/" element={<Home />} />
