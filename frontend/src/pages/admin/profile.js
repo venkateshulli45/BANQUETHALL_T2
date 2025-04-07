@@ -9,9 +9,10 @@ const Profile = ({ vendorDetails, onUpdate, isDarkTheme }) => {
     phone: '',
     city: ''
   });
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (vendorDetails) {
+    if (vendorDetails && !isEditing ) {
       setFormData({
         vendor_name: vendorDetails.vendor_name || '',
         email: vendorDetails.email || '',
@@ -19,14 +20,12 @@ const Profile = ({ vendorDetails, onUpdate, isDarkTheme }) => {
         city: vendorDetails.city || ''
       });
     }
-  }, [vendorDetails]);
+  }, [vendorDetails, isEditing]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
+    setErrors(prev => ({ ...prev, [name]: '' }));
   };
 
   const handleSubmit = async (e) => {
@@ -61,6 +60,21 @@ const Profile = ({ vendorDetails, onUpdate, isDarkTheme }) => {
     }
   };
 
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.vendor_name) {
+      errors.vendor_name = 'Name is required';
+    }
+    if (!formData.phone) {
+      errors.phone = 'Phone is required';
+    }
+    if (!formData.city) {
+      errors.city = 'City is required';
+    }
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   return (
     <div className={styles.profileContainer}>
       <div className={styles.profileHeader}>
@@ -68,7 +82,12 @@ const Profile = ({ vendorDetails, onUpdate, isDarkTheme }) => {
       </div>
 
       {isEditing ? (
-        <form onSubmit={handleSubmit} className={styles.profileDetails}>
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          if (validateForm()) {
+            handleSubmit(e);
+          }
+        }} className={styles.profileDetails}>
           <div className={styles.profileField}>
             <label htmlFor="vendor_name">Name:</label>
             <input
@@ -79,6 +98,7 @@ const Profile = ({ vendorDetails, onUpdate, isDarkTheme }) => {
               onChange={handleInputChange}
               required
             />
+            {errors.vendor_name && <div className={styles.error}>{errors.vendor_name}</div>}
           </div>
 
           <div className={styles.profileField}>
@@ -105,6 +125,7 @@ const Profile = ({ vendorDetails, onUpdate, isDarkTheme }) => {
               pattern="[6-9]{1}[0-9]{9}"
               title="Indian mobile number (10 digits starting with 6-9)"
             />
+            {errors.phone && <div className={styles.error}>{errors.phone}</div>}
           </div>
 
           <div className={styles.profileField}>
@@ -116,6 +137,7 @@ const Profile = ({ vendorDetails, onUpdate, isDarkTheme }) => {
               onChange={handleInputChange}
               required
             />
+            {errors.city && <div className={styles.error}>{errors.city}</div>}
           </div>
 
           <div className={styles.buttonGroup}>
