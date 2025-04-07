@@ -1,5 +1,3 @@
-// module.js
-
 import { db } from '../config/db.js';
 
 export const createSignupTable = async () => {
@@ -19,7 +17,6 @@ export const createSignupTable = async () => {
   }
 };
 
-
 export const createSignupTableForBusiness = async () => {
   try {
     await db.promise().query(`
@@ -37,10 +34,6 @@ export const createSignupTableForBusiness = async () => {
     console.error("Error creating business table:", err);
   }
 };
-
-
-
-
 
 export const createBankDetailsTable = async () => {
   try {
@@ -61,30 +54,6 @@ export const createBankDetailsTable = async () => {
   }
 };
 
-
-// export const createFunctionHallsTable = async () => {
-//   try {
-//     await db.promise().query(`
-//       CREATE TABLE IF NOT EXISTS function_halls (
-//         id INT AUTO_INCREMENT PRIMARY KEY,
-//         vendor_email VARCHAR(255) NOT NULL,
-//         hall_name VARCHAR(255) NOT NULL,
-//         city VARCHAR(255) NOT NULL,
-//         location VARCHAR(255) NOT NULL,
-//         capacity INT NOT NULL,
-//         price DECIMAL(10,2) NOT NULL,
-//         description TEXT NOT NULL,
-//         services JSON NOT NULL,
-//         images JSON NOT NULL,
-//         FOREIGN KEY (vendor_email) REFERENCES business(email) ON DELETE CASCADE
-//       )
-//     `);
-//     console.log("Function Halls table created successfully.");
-//   } catch (err) {
-//     console.error("Error creating function_halls table:", err);
-//   }
-// };
-
 export const createFunctionHallsTable = async () => {
   try {
     await db.promise().query(`
@@ -100,9 +69,8 @@ export const createFunctionHallsTable = async () => {
         services JSON NOT NULL,
         images JSON NOT NULL,
         statusOfHall TINYINT DEFAULT 2,
-        rating int DEFAULT 5,
+        rating INT DEFAULT 5,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
         FOREIGN KEY (vendor_email) REFERENCES business(email) ON DELETE CASCADE
       )
     `);
@@ -111,26 +79,24 @@ export const createFunctionHallsTable = async () => {
     console.error("Error creating function_halls table:", err);
   }
 };
-export const createPaymentTable=async()=>{
-  try{
+
+export const createPaymentTable = async () => {
+  try {
     await db.promise().query(`
-        CREATE TABLE IF NOT EXISTS payment_reports (
-          id INT AUTO_INCREMENT PRIMARY KEY,
-          vendor_email VARCHAR(255) NOT NULL,
-          vendor_name VARCHAR(255) NOT NULL,
-          hall_name VARCHAR(255) NOT NULL,
-          payment_status VARCHAR(50) NOT NULL,
-          date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      CREATE TABLE IF NOT EXISTS payment_reports (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        vendor_email VARCHAR(255) NOT NULL,
+        vendor_name VARCHAR(255) NOT NULL,
+        hall_name VARCHAR(255) NOT NULL,
+        payment_status VARCHAR(50) NOT NULL,
+        date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
-      
     `);
     console.log("Payment table created successfully.");
+  } catch (err) {
+    console.error("Error creating Payment table:", err);
   }
-  catch(err){
-    console.error("Error creating Payment table:",err)
-  }
-}
-
+};
 
 export const createNotificationsTable = async () => {
   try {
@@ -150,16 +116,15 @@ export const createNotificationsTable = async () => {
   }
 };
 
-
 export const createRefundTable = async () => {
   try {
     await db.promise().query(`
       CREATE TABLE IF NOT EXISTS refunds (
-          id INT AUTO_INCREMENT PRIMARY KEY,
-          vendor_email VARCHAR(255) NOT NULL,
-          hall_name VARCHAR(255) NOT NULL,
-          amount DECIMAL(10,2) NOT NULL,
-          date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        vendor_email VARCHAR(255) NOT NULL,
+        hall_name VARCHAR(255) NOT NULL,
+        amount DECIMAL(10,2) NOT NULL,
+        date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
     console.log("Refund table created successfully.");
@@ -168,53 +133,25 @@ export const createRefundTable = async () => {
   }
 };
 
-
-// export const createFunctionHallsTable2 = async () => {
-//   try {
-//     await db.promise().query(`
-//       CREATE TABLE IF NOT EXISTS function_halls2 (
-//         id INT AUTO_INCREMENT PRIMARY KEY,
-//         vendor_email VARCHAR(255) NOT NULL,
-//         hall_name VARCHAR(255) NOT NULL,
-//         city VARCHAR(255) NOT NULL,
-//         location VARCHAR(255) NOT NULL,
-//         capacity INT NOT NULL,
-//         price DECIMAL(10,2) NOT NULL,
-//         description TEXT NOT NULL,
-//         services JSON NOT NULL,
-//         images LONGBLOB NOT NULL,  -- Store images as BLOB
-//         FOREIGN KEY (vendor_email) REFERENCES business(email) ON DELETE CASCADE
-//       )
-//     `);
-//     console.log("Function Halls table created successfully.");
-//   } catch (err) {
-//     console.error("Error creating function_halls table:", err);
-//   }
-// };
-
-
-
 export const createBookingTable3 = async () => {
   try {
     await db.promise().query(`
-      CREATE TABLE user_bookings (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    firstname VARCHAR(255),
-    lastname VARCHAR(255),
-    email VARCHAR(255),
-    mobile VARCHAR(20),
-    alternate VARCHAR(20),
-    event_type VARCHAR(255),
-    guests INT,
-    event_date DATE,
-    user_email VARCHAR(255),
-    hall_name VARCHAR(255),
-    hall_id INT,
-    vendor_email VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-
+      CREATE TABLE IF NOT EXISTS user_bookings (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        firstname VARCHAR(255),
+        lastname VARCHAR(255),
+        email VARCHAR(255),
+        mobile VARCHAR(20),
+        alternate VARCHAR(20),
+        event_type VARCHAR(255),
+        guests INT,
+        event_date DATE,
+        user_email VARCHAR(255),
+        hall_name VARCHAR(255),
+        hall_id INT,
+        vendor_email VARCHAR(255),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
     `);
     console.log("bookings3 table created successfully.");
   } catch (err) {
@@ -222,28 +159,25 @@ export const createBookingTable3 = async () => {
   }
 };
 
-
 export const createUserPaymentTable = async () => {
   try {
     await db.promise().query(`
-      CREATE TABLE user_payments (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    userEmail VARCHAR(255) NOT NULL,
-    hallId INT NOT NULL,
-    hallName VARCHAR(255) NOT NULL,
-    amount DECIMAL(10,2) NOT NULL,
-    paymentDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    paymentStatus ENUM('Pending', 'Completed', 'Failed') NOT NULL DEFAULT 'Completed',
-    transactionId VARCHAR(255) UNIQUE NOT NULL
-);
-
+      CREATE TABLE IF NOT EXISTS user_payments (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        userEmail VARCHAR(255) NOT NULL,
+        hallId INT NOT NULL,
+        hallName VARCHAR(255) NOT NULL,
+        amount DECIMAL(10,2) NOT NULL,
+        paymentDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        paymentStatus ENUM('Pending', 'Completed', 'Failed') NOT NULL DEFAULT 'Completed',
+        transactionId VARCHAR(255) UNIQUE NOT NULL
+      )
     `);
     console.log("user payment table created successfully.");
   } catch (err) {
     console.error("Error creating user payment table:", err);
   }
 };
-
 
 export const createHallAvailabilityTable = async () => {
   try {
@@ -262,11 +196,10 @@ export const createHallAvailabilityTable = async () => {
   }
 };
 
-// In signup.model.js
 export const createUserNotificationsTable = async () => {
   try {
     await db.promise().query(`
-      CREATE TABLE IF NOT user_notifications (
+      CREATE TABLE IF NOT EXISTS user_notifications (
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_email VARCHAR(255) NOT NULL,
         message TEXT NOT NULL,
@@ -281,31 +214,26 @@ export const createUserNotificationsTable = async () => {
   }
 };
 
-
-
-
-
-export const createUserHallBookings= async () => {
+export const createUserHallBookings = async () => {
   try {
     await db.promise().query(`
-      CREATE TABLE IF NOT user_hall_bookings (
-    booking_id INT AUTO_INCREMENT PRIMARY KEY,
-    hall_id INT NOT NULL,
-    user_email VARCHAR(255) NOT NULL,
-    firstname VARCHAR(100),
-    lastname VARCHAR(100),
-    mobile VARCHAR(20),
-    alternate VARCHAR(20),
-    event_type VARCHAR(100),
-    guests INT,
-    event_date DATE NOT NULL,
-    additional_services JSON,
-    total_price DECIMAL(10,2),
-    status ENUM('pending', 'paid') DEFAULT 'pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (hall_id) REFERENCES function_halls(id) ON DELETE CASCADE
-);
-
+      CREATE TABLE IF NOT EXISTS user_hall_bookings (
+        booking_id INT AUTO_INCREMENT PRIMARY KEY,
+        hall_id INT NOT NULL,
+        user_email VARCHAR(255) NOT NULL,
+        firstname VARCHAR(100),
+        lastname VARCHAR(100),
+        mobile VARCHAR(20),
+        alternate VARCHAR(20),
+        event_type VARCHAR(100),
+        guests INT,
+        event_date DATE NOT NULL,
+        additional_services JSON,
+        total_price DECIMAL(10,2),
+        status ENUM('pending', 'paid') DEFAULT 'pending',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (hall_id) REFERENCES function_halls(id) ON DELETE CASCADE
+      )
     `);
     console.log("User Hall Booking table created successfully.");
   } catch (err) {

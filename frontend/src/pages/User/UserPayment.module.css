@@ -198,3 +198,26 @@
     color: #666;
     text-align: center;
   }
+
+
+  .backIconContainer {
+    margin-bottom: 20px;
+  }
+  
+  .backButton {
+    background: none;
+    border: none;
+    color: #3498db;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .backButton:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+    text-decoration: underline;
+  }
