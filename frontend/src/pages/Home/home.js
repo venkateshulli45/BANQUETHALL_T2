@@ -1,4 +1,3 @@
-// Home/home.js
 import React, { useState, useEffect } from 'react';
 import styles from './home.module.css';
 import { useNavigate } from 'react-router-dom';
@@ -8,54 +7,84 @@ import Footer from './Footer';
 
 function Home() {
     const navigate = useNavigate();
-    const [allHalls, setAllHalls] = useState([]); // Store all halls from API
-    const [filteredHalls, setFilteredHalls] = useState([]); // Store filtered halls
+    const [allHalls, setAllHalls] = useState([]);
+    const [filteredHalls, setFilteredHalls] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(24);
+    const [itemsPerPage] = useState(24);
+    const [bookedDates, setBookedDates] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
 
     const [filters, setFilters] = useState({
         price: "",
         capacity: "",
-        location: "",
+        city: "",
         rating: "",
         date: null
     });
 
-    // Fetch halls from backend
+    // Format date to YYYY-MM-DD
+    const formatDate = (date) => {
+        if (!date) return '';
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    // Fetch all halls
     const fetchHalls = async () => {
+        setIsLoading(true);
         try {
             const response = await fetch("http://localhost:8500/api/halls");
-    
+            
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-    
+
             const data = await response.json();
-            console.log("Fetched halls:", data);
-    
+            
             if (Array.isArray(data)) {
-                // Filter only approved halls where statusOfHall is 1
                 const approvedHalls = data.filter(hall => hall.statusOfHall === 1);
-                
                 setAllHalls(approvedHalls);
-                setFilteredHalls(approvedHalls); // Initialize filtered halls with approved data
+                setFilteredHalls(approvedHalls);
+                await fetchBookedDates(approvedHalls);
             } else {
                 console.error("Unexpected response format:", data);
                 setAllHalls([]);
                 setFilteredHalls([]);
             }
         } catch (error) {
-            console.error("Error fetching data:", error);
+            console.error("Error fetching halls:", error);
             setAllHalls([]);
             setFilteredHalls([]);
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    // Apply filters whenever filters state changes
-    useEffect(() => {
-        applyFilters();
-    }, [filters, allHalls]);
+    // Fetch booked dates for each hall
+    const fetchBookedDates = async (halls) => {
+        const datesMap = {};
+        
+        for (const hall of halls) {
+            try {
+                const response = await fetch(
+                    `http://localhost:8500/api/halls/${hall.id}/availability`
+                );
+                
+                if (response.ok) {
+                    const dates = await response.json();
+                    datesMap[hall.id] = dates;
+                }
+            } catch (error) {
+                console.error(`Error fetching dates for hall ${hall.id}:`, error);
+            }
+        }
+        
+        setBookedDates(datesMap);
+    };
 
+    // Apply all filters
     const applyFilters = () => {
         let result = [...allHalls];
         
@@ -69,21 +98,21 @@ function Home() {
             }
         }
         
-      // Capacity filter - fixed this section
-    if (filters.capacity) {
-        if (filters.capacity.endsWith('+')) {
-            const min = parseInt(filters.capacity);
-            result = result.filter(hall => hall.capacity >= min);
-        } else {
-            const [min, max] = filters.capacity.split('-').map(Number);
-            result = result.filter(hall => hall.capacity >= min && hall.capacity <= max);
+        // Capacity filter
+        if (filters.capacity) {
+            if (filters.capacity.endsWith('+')) {
+                const min = parseInt(filters.capacity);
+                result = result.filter(hall => hall.capacity >= min);
+            } else {
+                const [min, max] = filters.capacity.split('-').map(Number);
+                result = result.filter(hall => hall.capacity >= min && hall.capacity <= max);
+            }
         }
-    }
         
         // Location filter
         if (filters.city) {
             result = result.filter(hall => 
-                hall.city.toLowerCase().includes(filters.city.toLowerCase())
+                hall.city.toLowerCase() === filters.city.toLowerCase()
             );
         }
         
@@ -93,28 +122,20 @@ function Home() {
             result = result.filter(hall => hall.rating >= minRating);
         }
         
-        // Date filter (you'll need to implement availability check with your backend)
-        // This is a placeholder - you'll need to adjust based on your actual availability data
+        // Date availability filter
         if (filters.date) {
-            // You would typically make an API call here to check availability
-            // For now, we'll just pass all halls
-            // result = result.filter(hall => isHallAvailable(hall.id, filters.date));
+            const selectedDate = formatDate(filters.date);
+            result = result.filter(hall => {
+                const hallBookedDates = bookedDates[hall.id] || [];
+                return !hallBookedDates.includes(selectedDate);
+            });
         }
         
         setFilteredHalls(result);
-        setCurrentPage(1); // Reset to first page when filters change
+        setCurrentPage(1);
     };
 
-    useEffect(() => {
-        fetchHalls();
-    }, []);
-
-    const totalPages = Math.ceil(filteredHalls.length / itemsPerPage);
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredHalls.slice(indexOfFirstItem, indexOfLastItem);
-
-    // Update filter state
+    // Handle filter changes
     const handleFilterChange = (filterName, value) => {
         setFilters(prev => ({
             ...prev,
@@ -122,50 +143,69 @@ function Home() {
         }));
     };
 
+    // Pagination
+    const totalPages = Math.ceil(filteredHalls.length / itemsPerPage);
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredHalls.slice(indexOfFirstItem, indexOfLastItem);
 
-    
+    useEffect(() => {
+        fetchHalls();
+    }, []);
+
+    useEffect(() => {
+        applyFilters();
+    }, [filters, allHalls, bookedDates]);
+
     return (
         <div>
             <Navbar/>
             <div className={styles.home}>
                 <Filters filters={filters} onFilterChange={handleFilterChange} />
 
-                <main className={styles.con1}>
-                    {currentItems.length > 0 ? (
-                        currentItems.map((hall) => (
-                            <div 
-                                key={hall.id} 
-                                onClick={() => navigate('/HomeDetails', { state: { hall } })}
-                                className={styles.hall1}
-                            >
-                                {hall.images ? (
-                            <img
-                                src={`http://localhost:8500/uploads/${hall.images[0]}`}
-                                alt={hall.hall_name}
-                                style={{  objectFit: 'cover' }}
-                            />
-                        ) : (
-                            <p>No Image Available</p>
-                        )}
+                {isLoading ? (
+                    <div className={styles.loading}>Loading halls...</div>
+                ) : (
+                    <main className={styles.con1}>
+                        {currentItems.length > 0 ? (
+                            currentItems.map((hall) => (
+                                <div 
+                                    key={hall.id} 
+                                    onClick={() => navigate('/HomeDetails', { state: { hall } })}
+                                    className={styles.hall1}
+                                >
+                                    {hall.images && hall.images.length > 0 ? (
+                                        <img
+                                            src={`http://localhost:8500/uploads/${hall.images[0]}`}
+                                            alt={hall.hall_name}
+                                            style={{ objectFit: 'cover' }}
+                                        />
+                                    ) : (
+                                        <div className={styles.noImage}>No Image Available</div>
+                                    )}
 
-                                <hr />
-                                <div className={styles.halldata}>
-                                    <h3>{hall.hall_name}</h3>
-                                    <div className={styles.spec}>
-                                        <div>₹{hall.price}</div>
-                                        <div>⭐ {hall.rating}</div>
-                                        <div>🪑 {hall.capacity}</div>
-                                        <div>📍 {hall.city}</div>
+                                    <hr />
+                                    <div className={styles.halldata}>
+                                        <h3>{hall.hall_name}</h3>
+                                        <div className={styles.spec}>
+                                            <div>₹{hall.price.toLocaleString()}</div>
+                                            <div>⭐ {hall.rating || 'N/A'}</div>
+                                            <div>🪑 {hall.capacity}</div>
+                                            <div>📍 {hall.city}</div>
+                                        </div>
                                     </div>
                                 </div>
+                            ))
+                        ) : (
+                            <div className={styles.noResults}>
+                                {allHalls.length === 0 
+                                    ? "No halls available" 
+                                    : "No halls match your filters"}
                             </div>
-                        ))
-                    ) : (
-                        <div className={styles.noResults}>No halls match your filters</div>
-                    )}
-                </main>
+                        )}
+                    </main>
+                )}
 
-                {/* Pagination */}
                 {filteredHalls.length > itemsPerPage && (
                     <div className={styles.pagination}>
                         <button 
@@ -175,7 +215,9 @@ function Home() {
                         >
                             Previous
                         </button>
-                        <span className={styles.pageInfo}>Page {currentPage} of {totalPages}</span>
+                        <span className={styles.pageInfo}>
+                            Page {currentPage} of {totalPages}
+                        </span>
                         <button 
                             onClick={() => setCurrentPage(currentPage + 1)} 
                             disabled={currentPage === totalPages} 
@@ -185,8 +227,6 @@ function Home() {
                         </button>
                     </div>
                 )}
-
-                <footer className={styles.footer}></footer>
 
                 <Footer/>
             </div>

@@ -69,12 +69,13 @@ const Filters = ({ filters = {}, onFilterChange }) => {
         <div className={styles.filterGroup}>
           <label>Check Availability</label>
           <DatePicker
-            selected={filters?.date || null}
+            selected={filters?.date}
             onChange={(date) => onFilterChange('date', date)}
             dateFormat="MM/dd/yyyy"
             minDate={tomorrow}
             placeholderText="Select Date"
             className={styles.datePicker}
+            isClearable
           />
         </div>
       </div>
